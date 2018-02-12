@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Gestos</string>
+    <string name="title_home">Inicio</string>
+    <string name="title_dashboard">Nuevo gesto</string>
+    <string name="title_notifications">Notificaciones</string>
+
+    <string name="error_grabar_gesto">Error al grabar el gesto</string>
+    <string name="error_no_existe_archivo_gestos">Error, no existe el archivo de gestos</string>
+    <string name="title_activity_actividad_entrada">ActividadEntrada</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
