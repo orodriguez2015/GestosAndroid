@@ -54,7 +54,6 @@ public class ActividadPrincipal extends AppCompatActivity implements GestureOver
                     return true;
 
                 case R.id.navigation_dashboard:
-                    //mTextMessage.setText(R.string.title_dashboard);
 
                     Intent intent = new Intent(ActividadPrincipal.this,ActividadEntrada.class);
                     startActivity(intent);

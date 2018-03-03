@@ -6,6 +6,7 @@ import android.gesture.GestureLibrary;
 import android.gesture.Prediction;
 
 import com.oscar.gestures.constantes.ConstantsGestures;
+import com.oscar.gestures.vo.Gesto;
 import com.oscar.utilities.constantes.Constantes;
 import com.oscar.utilities.exception.FileException;
 import com.oscar.utilities.exception.GestoException;
@@ -15,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -111,7 +113,6 @@ public class FicheroGestos {
      */
     public void almacenarGesto(Gesture gesture,String nombreGesto) throws FileException,GestoException {
         try {
-            //gestureLibrary.load();
             gestureLibrary.addGesture(nombreGesto, gesture);
             gestureLibrary.save();
 
@@ -130,6 +131,30 @@ public class FicheroGestos {
             LogCat.info(Constantes.TAG_UTILITIES,"Gesto reconocido: " + result);
         }
     }
+
+
+    /**
+     * Recupera una lista de gestos con el nombre con el
+     * @return
+     */
+    public List<Gesto> getGestos() {
+        List<Gesto> gestos = new ArrayList<Gesto>();
+
+        if(gestureLibrary!=null) {
+            Set<String> conjunto= gestureLibrary.getGestureEntries();
+            Iterator<String> it = conjunto.iterator();
+
+            while(it.hasNext()) {
+                Gesto g = new Gesto();
+                g.setDescripcion(it.next());
+                gestos.add(g);
+            }
+        }
+
+        return gestos;
+    }
+
+
 
     /**
      * Muestra a través de LogCat el contenido de un archivo de gestos
@@ -156,8 +181,8 @@ public class FicheroGestos {
         }catch(Exception e) {
             e.printStackTrace();
         }
-
     }
+
 
 
 }

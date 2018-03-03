@@ -9,6 +9,8 @@ import java.io.Serializable;
 public class Gesto implements Serializable {
 
     private String descripcion;
+    private String aplicacion;
+
 
     /**
      * Constructor
@@ -39,5 +41,23 @@ public class Gesto implements Serializable {
      */
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+
+    /**
+     * Nombre de la aplicación que se lanzará cuando se detecte el gesto
+     * @return String
+     */
+    public String getAplicacion() {
+        return aplicacion;
+    }
+
+
+    /**
+     * Establece el nombre de la aplicación que se lanzará cuando se detecte el gesto
+     * @param aplicacion String
+     */
+    public void setAplicacion(String aplicacion) {
+        this.aplicacion = aplicacion;
     }
 }

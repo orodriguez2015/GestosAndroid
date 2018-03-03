@@ -1,4 +1,4 @@
-package com.oscar.gestures;
+package com.oscar.gestures.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -8,16 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.oscar.gestures.R;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link FragmentoNuevoGesto.OnFragmentInteractionListener} interface
+ * {@link FragmentoVacio.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentoNuevoGesto#newInstance} factory method to
+ * Use the {@link FragmentoVacio#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FragmentoNuevoGesto extends Fragment {
+public class FragmentoVacio extends FragmentoPadre {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,7 +30,7 @@ public class FragmentoNuevoGesto extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public FragmentoNuevoGesto() {
+    public FragmentoVacio() {
         // Required empty public constructor
     }
 
@@ -39,11 +40,11 @@ public class FragmentoNuevoGesto extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentoNuevoGesto.
+     * @return A new instance of fragment FragmentoVacio.
      */
     // TODO: Rename and change types and number of parameters
-    public static FragmentoNuevoGesto newInstance(String param1, String param2) {
-        FragmentoNuevoGesto fragment = new FragmentoNuevoGesto();
+    public static FragmentoVacio newInstance(String param1, String param2) {
+        FragmentoVacio fragment = new FragmentoVacio();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -64,7 +65,7 @@ public class FragmentoNuevoGesto extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nuevo_gesto, container, false);
+        return inflater.inflate(R.layout.fragmento_vacio, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
