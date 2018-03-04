@@ -63,7 +63,6 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_entrada);
 
-
         /*
          * Se establece el título de la activity
          */
@@ -73,27 +72,18 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
        // setSupportActionBar(toolbar);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getApplicationContext(),getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         cargarFicheroGestos();
-
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
 
     }
 
@@ -232,29 +222,37 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
 
 
     /**
-     * Método que tiene que implementar la actividad por usar el Fragment implementado
-     * en la clase FragmentoListadoGestos
-     *
-     * @param item
+     * Operación que recarga el listado de gestos y pone el fragmento que lo contiene
+     * en primer plano
      */
-    public void onListFragmentInteraction(Gesto item) {
-        LogCat.info(ConstantsGestures.TAG,"onListFragmentInteraction");
+    public void recargarListadoGestos() {
+        LogCat.info(ConstantsGestures.TAG," recargarListadoGestos ===>");
+        cargarFicheroGestos();
+
+        /*
+         * Se obtiene el Fragmento en el que se muestran el listado de gestos
+         */
+        SectionsPagerAdapter adapter = (SectionsPagerAdapter)this.mViewPager.getAdapter();
+        FragmentoListadoGestos fragmentoListadoGestos = (FragmentoListadoGestos)adapter.getItem(0);
+
+        /*
+         * Se pasan los gestos al Fragmento
+         */
+        fragmentoListadoGestos.getAdapter().setItems(this.ficheroGestos.getGestos());
+        fragmentoListadoGestos.getAdapter().notifyDataSetChanged();
+
+        /*
+         * Se establece el Fragmento con el listado como fragmento actual
+         */
+        this.mViewPager.setCurrentItem(0);
     }
-
-
 
 
     /**
-     * Método que tiene que implementar la actividad por usar el Fragment FragmentoFormularioNuevoGesto
-     * @param uri Uri
+     * Esta operación carga el contenido del fichero de gestos
      */
-    public void onFragmentInteraction(Uri uri){
-        LogCat.info(ConstantsGestures.TAG,"onFragmentInteraction uri: " + uri);
-    }
-
-
-
     private void cargarFicheroGestos() {
+
         try {
 
             ficheroGestos = FicheroGestos.getInstance(getFilesDir());
@@ -352,6 +350,28 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
         String[] p = new String[] {"1","2","3","4","5","6","7","8","9","10"};
 
         return p[i];
+    }
+
+
+    /**
+     * Método que tiene que implementar la actividad por usar el Fragment implementado
+     * en la clase FragmentoListadoGestos
+     *
+     * @param item
+     */
+    public void onListFragmentInteraction(Gesto item) {
+        LogCat.info(ConstantsGestures.TAG,"onListFragmentInteraction");
+    }
+
+
+
+
+    /**
+     * Método que tiene que implementar la actividad por usar el Fragment FragmentoFormularioNuevoGesto
+     * @param uri Uri
+     */
+    public void onFragmentInteraction(Uri uri){
+        LogCat.info(ConstantsGestures.TAG,"onFragmentInteraction uri: " + uri);
     }
 
 

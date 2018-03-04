@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +13,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.oscar.gestures.ActividadEntrada;
 import com.oscar.gestures.ActividadNuevoGesto;
 import com.oscar.gestures.R;
 import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.vo.Gesto;
+import com.oscar.utilities.MessageUtils;
 import com.oscar.utilities.StringUtils;
 import com.oscar.utilities.logcat.LogCat;
 
@@ -25,7 +28,7 @@ import com.oscar.utilities.logcat.LogCat;
  * Activities that contain this fragment must implement the
  * {@link FragmentoFormularioNuevoGesto.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link FragmentoFormularioNuevoGesto#newInstance} factory method to
+ //* Use the {@link FragmentoFormularioNuevoGesto#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
@@ -58,10 +61,10 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+   //  * @param param1 Parameter 1.
+    // * @param param2 Parameter 2.
      * @return A new instance of fragment FragmentoFormularioNuevoGesto.
-     */
+     *
     public static FragmentoFormularioNuevoGesto newInstance(String param1, String param2) {
         FragmentoFormularioNuevoGesto fragment = new FragmentoFormularioNuevoGesto();
         Bundle args = new Bundle();
@@ -70,6 +73,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         fragment.setArguments(args);
         return fragment;
     }
+     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,10 +111,10 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         this.txtNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(v==txtNombre && !hasFocus) {
-                    //TelephoneUtil.hideKeyboard(getActivity());
-                    hideKeyboard();
-                }
+            if(v==txtNombre && !hasFocus) {
+                //TelephoneUtil.hideKeyboard(getActivity());
+                hideKeyboard();
+            }
             }
         });
 
@@ -118,10 +122,10 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         this.txtDescripcion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(v==txtDescripcion && !hasFocus) {
-                    //TelephoneUtil.hideKeyboard(getActivity());
-                    hideKeyboard();
-                }
+            if(v==txtDescripcion && !hasFocus) {
+                //TelephoneUtil.hideKeyboard(getActivity());
+                hideKeyboard();
+            }
             }
         });
 
@@ -159,8 +163,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
             }// onClick
 
-        });
-
+         });
     }
 
 
@@ -172,28 +175,46 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         Intent intent = new Intent(getActivity(),ActividadNuevoGesto.class);
         if(gesto!=null) {
             intent.putExtra(ConstantsGestures.PARAMETRO_GESTO_INTENT,gesto);
+            startActivityForResult(intent,ConstantsGestures.RESULTADO_ACTIVIDAD_ALTA_GESTO);
         }
-        startActivity(intent);
-    }
 
+    }
 
 
     /**
-     * Abre el fragmento a partir del cual se puede detectar un gesto para almacenarlo en
-     * la librería de gestos
-     *
-    private void abrirFragmentoDeteccionGesto() {
+     * Método que
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
 
-        Fragment fragment2=new FragmentoDeteccionGesto();
-        android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
-        //fragmentTransaction.replace(R.id.container,fragment2,"tag");
-        fragmentTransaction.replace(R.id.content,fragment2);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        LogCat.info(ConstantsGestures.TAG,"onActivityResult requestCode: " + requestCode + ", resultCode: " + resultCode);
+        MessageUtils.showToast(getContext(),"requestCode: " + requestCode + ", resultCode: " + resultCode,20);
+        if (requestCode == ConstantsGestures.RESULTADO_ACTIVIDAD_ALTA_GESTO) {
 
+
+            ActividadEntrada actividad = (ActividadEntrada)getActivity();
+            actividad.recargarListadoGestos();
+            LogCat.info(ConstantsGestures.TAG,"El activity se trata de ActividadEntrada");
+
+
+
+
+            /*
+            if (resultCode == RESULT_OK) {
+
+            }
+            */
+        }
     }
-    */
+
+
+
+
+
 
 
     /**

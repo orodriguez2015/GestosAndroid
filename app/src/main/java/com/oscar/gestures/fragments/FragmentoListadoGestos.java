@@ -18,19 +18,18 @@ import com.oscar.utilities.logcat.LogCat;
 import java.util.List;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
+ * Fragmento que representa un listado de gestos
+ *
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
  */
 public class FragmentoListadoGestos extends FragmentoPadre {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private List<Gesto> gestos = null;
+
+    private RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,9 +39,6 @@ public class FragmentoListadoGestos extends FragmentoPadre {
 
     }
 
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static FragmentoListadoGestos newInstance(int columnCount,List<Gesto> gestos) {
         FragmentoListadoGestos fragment = new FragmentoListadoGestos();
         Bundle args = new Bundle();
@@ -60,6 +56,7 @@ public class FragmentoListadoGestos extends FragmentoPadre {
     public void setGestos(List<Gesto> gestos) {
         this.gestos = gestos;
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,17 +83,30 @@ public class FragmentoListadoGestos extends FragmentoPadre {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            this.recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                this.recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                this.recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new GestoRecyclerViewAdapter(gestos, mListener));
+            this.recyclerView.setAdapter(new GestoRecyclerViewAdapter(gestos, mListener));
         }
         return view;
     }
 
+
+    /**
+     * Devuelve el adapter
+     * @return
+     */
+    public GestoRecyclerViewAdapter getAdapter() {
+        GestoRecyclerViewAdapter adapter = null;
+
+        if(recyclerView!=null) {
+            adapter = (GestoRecyclerViewAdapter)recyclerView.getAdapter();
+        }
+        return adapter;
+    }
 
 
     @Override

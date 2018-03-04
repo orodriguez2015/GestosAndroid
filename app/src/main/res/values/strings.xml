@@ -5,13 +5,18 @@
     <string name="title_notifications">Notificaciones</string>
     <string name="title_detector_gestos">Detector de gestos</string>
 
-    <string name="error_grabar_gesto">Error al grabar el gesto</string>
+
+    <!-- SECCION ERRORES -->
+    <string name="error_grabar_gesto">Se ha producido un error al grabar el gesto</string>
     <string name="error_no_existe_archivo_gestos">Error, no existe el archivo de gestos</string>
     <string name="error_gesto_obligatorio">El nombre es obligatorio</string>
     <string name="error_app_obligatorio">El nombre de la aplicación es obligatorio</string>
+
+    <!-- SECCION ERRORES -->
+
     <string name="title_activity_actividad_entrada">ActividadEntrada</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+
 
 
     <string name="listado_gestos">Gestos actuales</string>
@@ -27,6 +32,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="dibuja_gesto">Dibuja el gesto</string>
+
 
 
 </resources>

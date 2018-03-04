@@ -11,4 +11,9 @@ public class ConstantsGestures {
     public static final String NAME_FILE_GESTURES = "gestures";
     public static final Integer NUMERO_OPCIONES_FRAGMENTOS = 3;
     public static final String PARAMETRO_GESTO_INTENT = "gesto";
+
+    /**
+     * Código que devuelve ActividadNuevoGesto al Fragment/Activity que lo a abierto
+     */
+    public static final Integer RESULTADO_ACTIVIDAD_ALTA_GESTO = 0;
 }

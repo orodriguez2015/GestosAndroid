@@ -20,7 +20,7 @@ import java.util.List;
  */
 public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Gesto> mValues;
+    private List<Gesto> items;
     private final OnListFragmentInteractionListener mListener;
 
 
@@ -30,7 +30,7 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
      * @param listener
      */
     public GestoRecyclerViewAdapter(List<Gesto> items, OnListFragmentInteractionListener listener) {
-        mValues = items;
+        this.items = items;
         mListener = listener;
     }
 
@@ -40,11 +40,21 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
         return new ViewHolder(view);
     }
 
+    /**
+     * Establece la items
+     * @param items List<Gesto>
+     */
+    public void setItems(List<Gesto> items) {
+        this.items = items;
+    }
+
+
+
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getDescripcion());
+        holder.mItem = items.get(position);
+        holder.mIdView.setText(items.get(position).getDescripcion());
         //holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +71,7 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return items.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

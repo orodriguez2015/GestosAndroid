@@ -1,15 +1,27 @@
 package com.oscar.gestures;
 
+import android.app.Activity;
 import android.gesture.Gesture;
 import android.gesture.GestureOverlayView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.oscar.gestures.configuracion.fichero.FicheroGestos;
 import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.vo.Gesto;
+import com.oscar.utilities.MessageUtils;
 import com.oscar.utilities.logcat.LogCat;
 
+
+/**
+ * Esta actividad se utiliza para que el usuario dibuje el gesto. Una vez hecho se almacenerá en el fichero
+ * de gestos, y se cierra la actividad.
+ *
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
+ */
 public class ActividadNuevoGesto extends AppCompatActivity implements GestureOverlayView.OnGesturePerformedListener  {
+
+    private Gesto gesto = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +46,10 @@ public class ActividadNuevoGesto extends AppCompatActivity implements GestureOve
          * Se recupera el objeto de la clase Gesto pasado en el Intent
          */
         Bundle params = getIntent().getExtras();
-        Gesto gesto = (Gesto)params.getSerializable(ConstantsGestures.PARAMETRO_GESTO_INTENT);
-        LogCat.info(ConstantsGestures.TAG,"gesto.nombre: " + gesto.getDescripcion());
+        gesto = (Gesto)params.getSerializable(ConstantsGestures.PARAMETRO_GESTO_INTENT);
+        if(gesto!=null) {
+            LogCat.info(ConstantsGestures.TAG, "gesto.nombre: " + gesto.getDescripcion());
+        }
     }
 
     /**
@@ -58,6 +72,20 @@ public class ActividadNuevoGesto extends AppCompatActivity implements GestureOve
     @Override
     public void onGesturePerformed(GestureOverlayView overlay, Gesture gesture) {
         LogCat.info(ConstantsGestures.TAG," onGesturePerformed ===>");
+
+        if(gesture!=null) {
+
+            try {
+                FicheroGestos ficheroGestos = FicheroGestos.getInstance(getFilesDir());
+                ficheroGestos.almacenarGesto(gesture,gesto.getDescripcion());
+                setResult(Activity.RESULT_OK);
+                finish();
+            }catch(Exception e) {
+                e.printStackTrace();
+                MessageUtils.showToastDuracionCorta(this,getString(R.string.error_grabar_gesto));
+            }
+
+        }
     }
 
 }
