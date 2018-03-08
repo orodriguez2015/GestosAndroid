@@ -11,11 +11,14 @@
     <string name="error_no_existe_archivo_gestos">Error, no existe el archivo de gestos</string>
     <string name="error_gesto_obligatorio">El nombre es obligatorio</string>
     <string name="error_app_obligatorio">El nombre de la aplicación es obligatorio</string>
+    <string name="error_lanzar_aplicacion">Se ha producido un error al lanzar la aplicación</string>
 
     <!-- SECCION ERRORES -->
 
     <string name="title_activity_actividad_entrada">ActividadEntrada</string>
     <string name="action_settings">Settings</string>
+
+
 
 
 

@@ -2,16 +2,21 @@ package com.oscar.gestures.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.database.DataSetObserver;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 
 import com.oscar.gestures.ActividadEntrada;
 import com.oscar.gestures.ActividadNuevoGesto;
@@ -20,7 +25,11 @@ import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.vo.Gesto;
 import com.oscar.utilities.MessageUtils;
 import com.oscar.utilities.StringUtils;
+import com.oscar.utilities.TelephoneUtil;
 import com.oscar.utilities.logcat.LogCat;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -28,7 +37,7 @@ import com.oscar.utilities.logcat.LogCat;
  * Activities that contain this fragment must implement the
  * {@link FragmentoFormularioNuevoGesto.OnFragmentInteractionListener} interface
  * to handle interaction events.
- //* Use the {@link FragmentoFormularioNuevoGesto#newInstance} factory method to
+ //* Use the {@link FragmentoFormularioNuevoGesto} factory method to
  * create an instance of this fragment.
  */
 public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
@@ -43,6 +52,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
     private EditText txtNombre;
     private EditText txtDescripcion;
+    private Spinner desplegableAplicacion;
     private Button botonSiguiente;
 
 
@@ -53,27 +63,9 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
      * Constructor. Tiene que estar vacio para los fragmentos
      */
     public FragmentoFormularioNuevoGesto() {
-        // Required empty public constructor
+
     }
 
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-   //  * @param param1 Parameter 1.
-    // * @param param2 Parameter 2.
-     * @return A new instance of fragment FragmentoFormularioNuevoGesto.
-     *
-    public static FragmentoFormularioNuevoGesto newInstance(String param1, String param2) {
-        FragmentoFormularioNuevoGesto fragment = new FragmentoFormularioNuevoGesto();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-     */
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,7 +91,26 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
         this.txtNombre = (EditText)getActivity().findViewById(R.id.txtNombreGesto);
         this.txtDescripcion = (EditText) getActivity().findViewById(R.id.txtAplicacionGesto);
+        this.desplegableAplicacion = (Spinner)getActivity().findViewById(R.id.desplegableAplicacion);
         this.botonSiguiente = (Button)getActivity().findViewById(R.id.btnSiguiente);
+
+
+        // Se recuperan las aplicaciones del teléfono para mostrar en el Spinner
+
+        List<ApplicationInfo> appsInstalled = TelephoneUtil.getInstalledApplications(getActivity());
+
+        List<String> nombres = new ArrayList<String>();
+
+        for(int i=0;appsInstalled!=null && i<appsInstalled.size();i++) {
+            nombres.add(appsInstalled.get(i).processName);
+
+        }
+
+
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,nombres);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        this.desplegableAplicacion.setAdapter(adapter);
 
         /*
          * Hint para los campos de tipo EditText
@@ -194,20 +205,10 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         LogCat.info(ConstantsGestures.TAG,"onActivityResult requestCode: " + requestCode + ", resultCode: " + resultCode);
         MessageUtils.showToast(getContext(),"requestCode: " + requestCode + ", resultCode: " + resultCode,20);
         if (requestCode == ConstantsGestures.RESULTADO_ACTIVIDAD_ALTA_GESTO) {
-
-
             ActividadEntrada actividad = (ActividadEntrada)getActivity();
             actividad.recargarListadoGestos();
             LogCat.info(ConstantsGestures.TAG,"El activity se trata de ActividadEntrada");
 
-
-
-
-            /*
-            if (resultCode == RESULT_OK) {
-
-            }
-            */
         }
     }
 
@@ -270,6 +271,136 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+
+
+
+    private static class ItemDesplegable {
+        private String descripcion;
+        private long id;
+
+
+        public long getId() {
+            return id;
+        }
+
+        public void setId(long id) {
+            this.id = id;
+        }
+
+        public String getDescripcion() {
+            return descripcion;
+        }
+
+        public void setDescripcion(String descripcion) {
+            this.descripcion = descripcion;
+        }
+
+        public Drawable getImagen() {
+            return imagen;
+        }
+
+        public void setImagen(Drawable imagen) {
+            this.imagen = imagen;
+        }
+
+        private Drawable imagen;
+
+
+
+
+    }
+
+
+
+    private static class AdapterDesplegable implements SpinnerAdapter {
+
+        List<ItemDesplegable> items = null;
+
+        /**
+         * Constructor
+         * @param items List<ItemDesplegable>
+         */
+        public AdapterDesplegable(List<ItemDesplegable> items) {
+            this.items = items;
+        }
+
+
+        public List<ItemDesplegable> getItems() {
+            return items;
+        }
+
+        public void setItems(List<ItemDesplegable> items) {
+            this.items = items;
+        }
+
+
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            return null;
+        }
+
+        @Override
+        public void registerDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public void unregisterDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public int getCount() {
+            if(items!=null) {
+                return items.size();
+            }
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            if(items!=null) {
+                return items.get(position);
+            }
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            if(items!=null) {
+                return items.get(position).getId();
+            }
+            return -1;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return null;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return 0;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 0;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
     }
 
 

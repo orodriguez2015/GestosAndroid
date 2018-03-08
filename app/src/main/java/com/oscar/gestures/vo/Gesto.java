@@ -1,15 +1,20 @@
 package com.oscar.gestures.vo;
 
+import android.gesture.Gesture;
+
 import java.io.Serializable;
 
 /**
- * Clase Gesto
+ * Clase Gesto que contiene el nombre, gesture y aplicación que se abre una vez
+ * que el usuario dibuja el gesto
+ *
  * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
  */
 public class Gesto implements Serializable {
 
     private String descripcion;
     private String aplicacion;
+    private Gesture gesture;
 
 
     /**
@@ -59,5 +64,22 @@ public class Gesto implements Serializable {
      */
     public void setAplicacion(String aplicacion) {
         this.aplicacion = aplicacion;
+    }
+
+    /**
+     * Devuelve el gesto
+     * @return Gesture
+     */
+    public Gesture getGesture() {
+        return gesture;
+    }
+
+
+    /**
+     * Establece el gesto
+     * @param gesture Gesture
+     */
+    public void setGesture(Gesture gesture) {
+        this.gesture = gesture;
     }
 }

@@ -42,6 +42,16 @@
                 android:layout_height="wrap_content"
                 android:inputType="textAutoComplete"/>
 
+
+            <Spinner
+                android:id="@+id/desplegableAplicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dialog">
+
+            </Spinner>
+
+
             <Button
                 android:id="@+id/btnSiguiente"
                 style="?android:textAppearanceSmall"
@@ -49,6 +59,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/siguiente"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnCamara"
+                style="?android:textAppearanceSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Camara"
                 android:textStyle="bold" />
 
         </LinearLayout>

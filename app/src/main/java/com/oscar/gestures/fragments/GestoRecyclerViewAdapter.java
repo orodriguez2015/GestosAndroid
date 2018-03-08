@@ -9,12 +9,12 @@ import android.widget.TextView;
 import com.oscar.gestures.R;
 import com.oscar.gestures.fragments.FragmentoListadoGestos.OnListFragmentInteractionListener;
 import com.oscar.gestures.vo.Gesto;
-import com.oscar.gestures.vo.dummy.DummyContent.DummyItem;
+
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Gesto} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
