@@ -113,7 +113,6 @@ public class FicheroGestos {
      */
     public void almacenarGesto(Gesture gesture,String nombreGesto) throws FileException,GestoException {
         try {
-
             gestureLibrary.addGesture(nombreGesto, gesture);
             gestureLibrary.save();
 

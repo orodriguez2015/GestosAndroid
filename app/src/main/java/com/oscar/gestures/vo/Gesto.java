@@ -1,7 +1,5 @@
 package com.oscar.gestures.vo;
 
-import android.gesture.Gesture;
-
 import java.io.Serializable;
 
 /**
@@ -12,40 +10,15 @@ import java.io.Serializable;
  */
 public class Gesto implements Serializable {
 
-    private String descripcion;
+    private Long id;
+    private String nombre;
     private String aplicacion;
-    private Gesture gesture;
-
 
     /**
      * Constructor
      */
     public Gesto() {
-    }
 
-    /**
-     * Constructor
-     * @param descripcion String
-     */
-    public Gesto(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    /**
-     * Devuelve la descripción del gesto
-     * @return String
-     */
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-
-    /**
-     * Establece una descripción al gesto
-     * @param descripcion String
-     */
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
     }
 
 
@@ -66,20 +39,38 @@ public class Gesto implements Serializable {
         this.aplicacion = aplicacion;
     }
 
+
     /**
-     * Devuelve el gesto
-     * @return Gesture
+     * Devuelve el nombre del gesto
+     * @return String
      */
-    public Gesture getGesture() {
-        return gesture;
+    public String getNombre() {
+        return nombre;
     }
 
 
     /**
-     * Establece el gesto
-     * @param gesture Gesture
+     * Establece el nombre del gesto
+     * @param nombre String
      */
-    public void setGesture(Gesture gesture) {
-        this.gesture = gesture;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * Devuelve el id del gesto
+     * @return Long
+     */
+    public Long getId() {
+        return id;
+    }
+
+
+    /**
+     * Establece el id del gesto
+     * @param id Long
+     */
+    public void setId(Long id) {
+        this.id = id;
     }
 }
