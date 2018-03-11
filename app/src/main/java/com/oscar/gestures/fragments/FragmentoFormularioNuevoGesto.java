@@ -102,8 +102,8 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         List<String> nombres = new ArrayList<String>();
 
         for(int i=0;appsInstalled!=null && i<appsInstalled.size();i++) {
-            nombres.add(appsInstalled.get(i).processName);
-
+            CharSequence salida = appsInstalled.get(i).processName;
+            nombres.add(salida.toString());
         }
 
 
@@ -166,7 +166,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
                     focus.setFocusable(true);
                 }else {
                     Gesto gesto = new Gesto();
-                    gesto.setDescripcion(txtNombre.getText().toString());
+                    gesto.setNombre(txtNombre.getText().toString());
                     gesto.setAplicacion(txtDescripcion.getText().toString());
 
                     abrirActividad(gesto);

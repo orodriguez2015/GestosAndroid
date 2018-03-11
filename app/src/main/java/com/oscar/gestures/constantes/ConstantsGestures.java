@@ -16,4 +16,7 @@ public class ConstantsGestures {
      * Código que devuelve ActividadNuevoGesto al Fragment/Activity que lo a abierto
      */
     public static final Integer RESULTADO_ACTIVIDAD_ALTA_GESTO = 0;
+
+
+    public static final Integer ERROR_ALMACENAR_GESTURE_FICHERO = -1;
 }

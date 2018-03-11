@@ -222,8 +222,6 @@ public class ActividadPrincipal extends AppCompatActivity implements GestureOver
             //GestosUtilities.almacenarGesto(gesture, getNameGesturesFile(),nombreGesto);
             ficheroGestos.almacenarGesto(gesture,nombreGesto);
 
-        }catch(FileException e) {
-            MessageUtils.showToastDuracionLarga(this,getString(R.string.error_no_existe_archivo_gestos));
         } catch(GestoException e) {
             MessageUtils.showToastDuracionLarga(this,getString(R.string.error_grabar_gesto));
         }

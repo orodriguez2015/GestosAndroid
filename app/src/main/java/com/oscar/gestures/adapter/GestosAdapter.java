@@ -138,7 +138,7 @@ public class GestosAdapter extends RecyclerView.Adapter<GestosAdapter.GestoViewH
      */
     @Override
     public void onBindViewHolder(GestoViewHolder viewHolder, int i) {
-        viewHolder.descripcion.setText(items.get(i).getDescripcion());
+        viewHolder.descripcion.setText(items.get(i).getNombre());
     }
 
 

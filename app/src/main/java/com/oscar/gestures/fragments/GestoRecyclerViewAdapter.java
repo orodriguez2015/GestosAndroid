@@ -54,7 +54,7 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = items.get(position);
-        holder.mIdView.setText(items.get(position).getDescripcion());
+        holder.mIdView.setText(items.get(position).getNombre());
         //holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {

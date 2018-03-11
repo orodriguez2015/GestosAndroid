@@ -15,6 +15,7 @@ public class GestoContract  {
     public static Integer ERROR_INSERTAR_GESTO   = 1;
     public static Integer ERROR_RECUPERAR_GESTOS = 2;
 
+
     /**
      * Definición de las columnas para la tabla Gesto de la base de datos
      */

@@ -23,7 +23,6 @@ import com.oscar.gestures.fragments.FragmentoVacio;
 import com.oscar.gestures.fragments.PlaceHolderFragment;
 import com.oscar.gestures.vo.Gesto;
 import com.oscar.utilities.MessageUtils;
-import com.oscar.utilities.TelephoneUtil;
 import com.oscar.utilities.logcat.LogCat;
 
 import java.util.ArrayList;
@@ -247,8 +246,6 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
          */
         this.mViewPager.setCurrentItem(0);
 
-
-        TelephoneUtil.getInstalledApplications(this);
     }
 
 

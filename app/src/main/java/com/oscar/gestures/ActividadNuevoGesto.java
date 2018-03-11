@@ -6,6 +6,9 @@ import android.gesture.GestureOverlayView;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
+import com.oscar.asyntask.ParametrosAsyncTask;
+import com.oscar.gestures.asyntask.NuevoGestoAsyncTask;
+import com.oscar.gestures.asyntask.vo.InfoAltaGestoVO;
 import com.oscar.gestures.configuracion.fichero.FicheroGestos;
 import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.vo.Gesto;
@@ -48,7 +51,7 @@ public class ActividadNuevoGesto extends AppCompatActivity implements GestureOve
         Bundle params = getIntent().getExtras();
         gesto = (Gesto)params.getSerializable(ConstantsGestures.PARAMETRO_GESTO_INTENT);
         if(gesto!=null) {
-            LogCat.info(ConstantsGestures.TAG, "gesto.nombre: " + gesto.getDescripcion());
+            LogCat.info(ConstantsGestures.TAG, "gesto.nombre: " + gesto.getNombre());
         }
     }
 
@@ -76,8 +79,21 @@ public class ActividadNuevoGesto extends AppCompatActivity implements GestureOve
         if(gesture!=null) {
 
             try {
+                LogCat.info(ConstantsGestures.TAG,"Grabando el gesto del id: " + gesture.getID());
+                this.gesto.setId(gesture.getID());
+
                 FicheroGestos ficheroGestos = FicheroGestos.getInstance(getFilesDir());
-                ficheroGestos.almacenarGesto(gesture,gesto.getDescripcion());
+
+                InfoAltaGestoVO alta = new InfoAltaGestoVO(this.gesto,ficheroGestos,gesture);
+
+                // Se ejecuta la tarea asíncrona
+                ParametrosAsyncTask<InfoAltaGestoVO> paramAsyncTask = new ParametrosAsyncTask<InfoAltaGestoVO>(alta);
+                NuevoGestoAsyncTask task = new NuevoGestoAsyncTask();
+
+                task.execute(paramAsyncTask);
+
+
+
                 setResult(Activity.RESULT_OK);
                 finish();
             }catch(Exception e) {

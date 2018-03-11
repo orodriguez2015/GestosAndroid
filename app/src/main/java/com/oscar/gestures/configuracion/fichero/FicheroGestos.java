@@ -111,9 +111,27 @@ public class FicheroGestos {
      * @param nombreGesto Nombre del gesto dentro del archivo de gestos
      * @throws FileException sino existe el archivo de gestos
      */
-    public void almacenarGesto(Gesture gesture,String nombreGesto) throws FileException,GestoException {
+    public void almacenarGesto(Gesture gesture,String nombreGesto) throws GestoException {
         try {
             gestureLibrary.addGesture(nombreGesto, gesture);
+            gestureLibrary.save();
+
+        }catch(Exception e) {
+            throw new GestoException("Error al guardar un gesto",e);
+        }
+    }
+
+
+
+    /**
+     * Borra un gesto de la librería de gestos
+     * @param gesture Gesto
+     * @param nombreGesto Nombre del gesto dentro del archivo de gestos
+     * @throws FileException sino existe el archivo de gestos
+     */
+    public void borrarGesto(Gesture gesture,String nombreGesto) throws GestoException {
+        try {
+            gestureLibrary.removeGesture(nombreGesto, gesture);
             gestureLibrary.save();
 
         }catch(Exception e) {
@@ -146,7 +164,8 @@ public class FicheroGestos {
 
             while(it.hasNext()) {
                 Gesto g = new Gesto();
-                g.setDescripcion(it.next());
+                //g.setDescripcion(it.next());
+                g.setNombre(it.next());
                 gestos.add(g);
             }
         }

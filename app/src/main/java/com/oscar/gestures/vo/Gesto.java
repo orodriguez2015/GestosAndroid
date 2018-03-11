@@ -21,6 +21,17 @@ public class Gesto implements Serializable {
 
     }
 
+    /**
+     * Constructor
+     * @param id Id del gesto
+     * @param nombre String
+     * @param aplicacion String
+     */
+    public Gesto(Long id, String nombre, String aplicacion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.aplicacion = aplicacion;
+    }
 
     /**
      * Nombre de la aplicación que se lanzará cuando se detecte el gesto
