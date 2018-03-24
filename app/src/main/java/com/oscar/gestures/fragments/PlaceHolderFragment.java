@@ -1,9 +1,12 @@
 package com.oscar.gestures.fragments;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import com.oscar.asyntask.ParametrosAsyncTask;
+import com.oscar.asyntask.RespuestaAsyncTask;
 import com.oscar.gestures.OnActualizarFragmentoListener;
-import com.oscar.gestures.configuracion.fichero.FicheroGestos;
+import com.oscar.gestures.asyntask.RecuperarGestosAsyncTask;
 import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.vo.Gesto;
 import com.oscar.utilities.logcat.LogCat;
@@ -17,12 +20,27 @@ import java.util.List;
  */
 public class PlaceHolderFragment {
 
+    private Context context = null;
+    private OnActualizarFragmentoListener listener = null;
+
+
+    /**
+     * Constructor
+     * @param context Context
+     * @param listener OnActualizarFragmentoListener
+     */
+    public PlaceHolderFragment(Context context,OnActualizarFragmentoListener listener) {
+        this.context = context;
+        this.listener = listener;
+    }
+
+
     /**
      * Devuelve un determinado Fragment
      * @param posicion int
      * @return Fragment
      */
-    public static Fragment getFragment(int posicion, OnActualizarFragmentoListener listener) {
+    public Fragment getFragment(int posicion) {
         FragmentoPadre fragmento = null;
 
         switch(posicion){
@@ -59,7 +77,7 @@ public class PlaceHolderFragment {
      * @param tipo TipoFragmento
      * @return Fragment
      */
-    private static FragmentoPadre newInstance(TipoFragmento tipo) {
+    private FragmentoPadre newInstance(TipoFragmento tipo) {
         FragmentoPadre f = null;
 
         if(tipo.equals(TipoFragmento.NUEVO_GESTO)) {
@@ -88,7 +106,7 @@ public class PlaceHolderFragment {
      * Devuelve la instancia del fragmento en el que se muestran los listados de gestos
      * @return FragmentoListadoGestos
      */
-    private static FragmentoListadoGestos instanceFragmentoListadoGestos() {
+    private FragmentoListadoGestos instanceFragmentoListadoGestos() {
         FragmentoListadoGestos f = null;
 
         try {
@@ -97,14 +115,26 @@ public class PlaceHolderFragment {
             /**
              * Se recupera los gestos almacenados en el fichero de gestos
              */
-            FicheroGestos ficheroGestos = FicheroGestos.getInstance(null);
-            ficheroGestos.mostrarGestos();
-            List<Gesto> gestos = ficheroGestos.getGestos();
+            //FicheroGestos ficheroGestos = FicheroGestos.getInstance(null);
+            //ficheroGestos.mostrarGestos();
+            //List<Gesto> gestos = ficheroGestos.getGestos();
 
-            LogCat.info(ConstantsGestures.TAG,"instanceFragmentoListadoGestos.end");
+            ParametrosAsyncTask<Context> params = new ParametrosAsyncTask<Context>(context);
+            RecuperarGestosAsyncTask task = new RecuperarGestosAsyncTask();
+            task.execute(params);
 
-            f = FragmentoListadoGestos.newInstance(1,gestos);
-            f.setGestos(gestos);
+            RespuestaAsyncTask respuesta = task.get();
+
+            LogCat.info(ConstantsGestures.TAG,"getGestos respuesta: " + respuesta.getStatus());
+            if(respuesta!=null && respuesta.getStatus().equals(0)) {
+                List<Gesto> gestos = respuesta.getItems();
+
+                LogCat.info(ConstantsGestures.TAG,"getGestos numero gestos recuperados: " + gestos.size());
+                f = FragmentoListadoGestos.newInstance(1, gestos);
+                f.setGestos(gestos);
+            }
+
+            LogCat.info(ConstantsGestures.TAG, "instanceFragmentoListadoGestos.end");
 
         }catch(Exception e) {
             e.printStackTrace();

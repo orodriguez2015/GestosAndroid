@@ -13,6 +13,7 @@ import com.oscar.gestures.db.GestoHelper;
 import com.oscar.gestures.vo.Gesto;
 import com.oscar.utilities.exception.DatabaseException;
 import com.oscar.utilities.exception.GestoException;
+import com.oscar.utilities.logcat.LogCat;
 
 /**
  * Tarea asíncrona a través de la cual se puede grabar la información de un gesto en base de datos
@@ -34,6 +35,7 @@ public class NuevoGestoAsyncTask extends AsyncTask<ParametrosAsyncTask<InfoAltaG
         Context context = params[0].getContext();
         InfoAltaGestoVO aux = params[0].getParametro();
 
+        LogCat.info(ConstantsGestures.TAG,"NuevoGestoTask gesto: " + aux.getGesto() + ",gesture: " + aux.getGesture());
 
         if(context!=null && aux!=null && aux.getGesto()!=null && aux.getFicheroGestos()!=null && aux.getGesture()!=null) {
 
@@ -44,10 +46,15 @@ public class NuevoGestoAsyncTask extends AsyncTask<ParametrosAsyncTask<InfoAltaG
             FicheroGestos ficheroGestos = aux.getFicheroGestos();
 
             try {
+
+                LogCat.info(ConstantsGestures.TAG,"NuevoGestoTask antes de almacenarGesto =====>");
+
                 /*
                  * Se almacena el gesto en el fichero de gestos
                  */
                 ficheroGestos.almacenarGesto(gesture,gesto.getNombre());
+
+                LogCat.info(ConstantsGestures.TAG,"NuevoGestoTask antes de almacenarGesto <=====");
 
                 /**
                  * Se almacena el detalle del gesto en base de datos

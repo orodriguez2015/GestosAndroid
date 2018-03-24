@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -22,7 +21,9 @@ import com.oscar.gestures.ActividadEntrada;
 import com.oscar.gestures.ActividadNuevoGesto;
 import com.oscar.gestures.R;
 import com.oscar.gestures.constantes.ConstantsGestures;
+import com.oscar.gestures.vo.AplicacionVO;
 import com.oscar.gestures.vo.Gesto;
+import com.oscar.spinner.adapter.ImageSpinnerAdapter;
 import com.oscar.utilities.MessageUtils;
 import com.oscar.utilities.StringUtils;
 import com.oscar.utilities.TelephoneUtil;
@@ -41,7 +42,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
-    // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -94,23 +94,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         this.desplegableAplicacion = (Spinner)getActivity().findViewById(R.id.desplegableAplicacion);
         this.botonSiguiente = (Button)getActivity().findViewById(R.id.btnSiguiente);
 
-
-        // Se recuperan las aplicaciones del teléfono para mostrar en el Spinner
-
-        List<ApplicationInfo> appsInstalled = TelephoneUtil.getInstalledApplications(getActivity());
-
-        List<String> nombres = new ArrayList<String>();
-
-        for(int i=0;appsInstalled!=null && i<appsInstalled.size();i++) {
-            CharSequence salida = appsInstalled.get(i).processName;
-            nombres.add(salida.toString());
-        }
-
-
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item,nombres);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        this.desplegableAplicacion.setAdapter(adapter);
 
         /*
          * Hint para los campos de tipo EditText
@@ -175,6 +158,9 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
             }// onClick
 
          });
+
+
+        recargarDesplegableAplicaciones();
     }
 
 
@@ -190,6 +176,41 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         }
 
     }
+
+
+
+
+    private void recargarDesplegableAplicaciones() {
+        // Se recuperan las aplicaciones del teléfono para mostrar en el Spinner
+
+        List<ApplicationInfo> appsInstalled = TelephoneUtil.getInstalledApplications(getActivity());
+        //List<String> nombres = new ArrayList<String>();
+        List<AplicacionVO> apps = new ArrayList<AplicacionVO>();
+
+
+        for (int i = 0; appsInstalled != null && i < appsInstalled.size(); i++) {
+            CharSequence salida = appsInstalled.get(i).processName;
+            Drawable imagen = appsInstalled.get(i).loadIcon(getActivity().getPackageManager());
+            //nombres.add(salida.toString());
+            AplicacionVO app = new AplicacionVO(salida.toString(),appsInstalled.get(i).icon);
+            app.setDrawable(imagen);
+
+            apps.add(app);
+        }
+
+
+        /*
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, nombres);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        */
+
+        ImageSpinnerAdapter adapter = new ImageSpinnerAdapter(getContext(),R.id.desplegableAplicacion,apps);
+        this.desplegableAplicacion.setAdapter(adapter);
+    }
+
+
+
+
 
 
     /**

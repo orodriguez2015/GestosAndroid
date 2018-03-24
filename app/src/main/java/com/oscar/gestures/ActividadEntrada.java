@@ -15,6 +15,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.oscar.asyntask.ParametrosAsyncTask;
+import com.oscar.asyntask.RespuestaAsyncTask;
+import com.oscar.gestures.asyntask.RecuperarGestosAsyncTask;
 import com.oscar.gestures.configuracion.fichero.FicheroGestos;
 import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.fragments.FragmentoFormularioNuevoGesto;
@@ -123,6 +126,8 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         private Context context = null;
+        private PlaceHolderFragment placeHolderFragment = null;
+
         OnActualizarFragmentoListener listener = null;
         List<Fragment> fragmentos =  new ArrayList<Fragment>();
 
@@ -160,6 +165,8 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
 
                 }
             };
+
+            placeHolderFragment = new PlaceHolderFragment(context,listener);
         }
 
 
@@ -172,7 +179,7 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
         @Override
         public Fragment getItem(int position) {
             LogCat.info(ConstantsGestures.TAG," ============> getItem listener:  " + listener);
-            fragmentos.add(PlaceHolderFragment.getFragment(position,listener));
+            fragmentos.add(placeHolderFragment.getFragment(position));
             return fragmentos.get(position);
         }
 
@@ -213,7 +220,7 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
                 case 1:
                     return getString(R.string.nuevo_gesto);
                 case 2:
-                    //return getString(R.string.title_notifications);
+
                     return "";
             }
             return null;
@@ -227,24 +234,49 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
      */
     public void recargarListadoGestos() {
         LogCat.info(ConstantsGestures.TAG," recargarListadoGestos ===>");
-        cargarFicheroGestos();
+        //cargarFicheroGestos();
+
 
         /*
-         * Se obtiene el Fragmento en el que se muestran el listado de gestos
+         * Se ejecuta
          */
-        SectionsPagerAdapter adapter = (SectionsPagerAdapter)this.mViewPager.getAdapter();
-        FragmentoListadoGestos fragmentoListadoGestos = (FragmentoListadoGestos)adapter.getItem(0);
 
-        /*
-         * Se pasan los gestos al Fragmento
-         */
-        fragmentoListadoGestos.getAdapter().setItems(this.ficheroGestos.getGestos());
-        fragmentoListadoGestos.getAdapter().notifyDataSetChanged();
+        try {
+            ParametrosAsyncTask<Context> params = new ParametrosAsyncTask<Context>(getApplicationContext());
+            RecuperarGestosAsyncTask task = new RecuperarGestosAsyncTask();
+            task.execute(params);
 
-        /*
-         * Se establece el Fragmento con el listado como fragmento actual
-         */
-        this.mViewPager.setCurrentItem(0);
+            RespuestaAsyncTask respuesta = task.get();
+            if(respuesta!=null && respuesta.getStatus().equals(0)) {
+
+                List<Gesto> gestos = (List<Gesto>)respuesta.getItems();
+
+                 /*
+                  * Se obtiene el Fragmento en el que se muestran el listado de gestos
+                  */
+                SectionsPagerAdapter adapter = (SectionsPagerAdapter)this.mViewPager.getAdapter();
+                FragmentoListadoGestos fragmentoListadoGestos = (FragmentoListadoGestos)adapter.getItem(0);
+
+                /*
+                 * Se pasan los gestos al Fragmento
+                */
+                //fragmentoListadoGestos.getAdapter().setItems(this.ficheroGestos.getGestos());
+                fragmentoListadoGestos.getAdapter().setItems(gestos);
+                fragmentoListadoGestos.getAdapter().notifyDataSetChanged();
+
+                /*
+                 * Se establece el Fragmento con el listado como fragmento actual
+                 */
+                this.mViewPager.setCurrentItem(0);
+            }
+
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+
 
     }
 

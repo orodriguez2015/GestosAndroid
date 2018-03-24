@@ -70,12 +70,6 @@ public class GestoHelper extends SQLiteOpenHelper {
 
         LogCat.debug(ConstantsGestures.TAG,"onUpgrade init");
 
-        /**
-         sqLiteDatabase.execSQL("CREATE TABLE " + AppyNewsContract.OrigenEntry.TABLE_NAME + " ("
-         + AppyNewsContract.OrigenEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-         + AppyNewsContract.OrigenEntry.URL + " TEXT,"
-         + AppyNewsContract.OrigenEntry.DESCRIPCION + " TEXT)");
-         **/
         LogCat.debug(ConstantsGestures.TAG,"onUpgrade end");
     }
 

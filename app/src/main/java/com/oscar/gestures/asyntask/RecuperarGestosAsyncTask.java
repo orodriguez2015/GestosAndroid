@@ -25,7 +25,7 @@ public class RecuperarGestosAsyncTask extends AsyncTask<ParametrosAsyncTask,Void
      */
     protected RespuestaAsyncTask doInBackground(ParametrosAsyncTask... params){
         RespuestaAsyncTask respuesta = null;
-        Context context = params[0].getContext();
+        Context context = (Context)params[0].getParametro();
 
         if(context!=null) {
             GestoHelper helper = new GestoHelper(context);

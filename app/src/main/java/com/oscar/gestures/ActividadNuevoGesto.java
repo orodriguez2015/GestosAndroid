@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.oscar.asyntask.ParametrosAsyncTask;
+import com.oscar.asyntask.RespuestaAsyncTask;
 import com.oscar.gestures.asyntask.NuevoGestoAsyncTask;
 import com.oscar.gestures.asyntask.vo.InfoAltaGestoVO;
 import com.oscar.gestures.configuracion.fichero.FicheroGestos;
@@ -88,14 +89,16 @@ public class ActividadNuevoGesto extends AppCompatActivity implements GestureOve
 
                 // Se ejecuta la tarea asíncrona
                 ParametrosAsyncTask<InfoAltaGestoVO> paramAsyncTask = new ParametrosAsyncTask<InfoAltaGestoVO>(alta);
+                paramAsyncTask.setContext(getApplicationContext());
                 NuevoGestoAsyncTask task = new NuevoGestoAsyncTask();
 
                 task.execute(paramAsyncTask);
+                RespuestaAsyncTask respuesta = task.get();
+                if(respuesta!=null && respuesta.getStatus().equals(0)) {
+                    setResult(Activity.RESULT_OK);
+                    finish();
+                }
 
-
-
-                setResult(Activity.RESULT_OK);
-                finish();
             }catch(Exception e) {
                 e.printStackTrace();
                 MessageUtils.showToastDuracionCorta(this,getString(R.string.error_grabar_gesto));
