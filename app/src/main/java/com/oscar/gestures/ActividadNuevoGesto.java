@@ -83,6 +83,7 @@ public class ActividadNuevoGesto extends AppCompatActivity implements GestureOve
                 LogCat.info(ConstantsGestures.TAG,"Grabando el gesto del id: " + gesture.getID());
                 this.gesto.setId(gesture.getID());
 
+
                 FicheroGestos ficheroGestos = FicheroGestos.getInstance(getFilesDir());
 
                 InfoAltaGestoVO alta = new InfoAltaGestoVO(this.gesto,ficheroGestos,gesture);

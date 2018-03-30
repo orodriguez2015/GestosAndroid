@@ -1,5 +1,7 @@
 package com.oscar.gestures.vo;
 
+import android.graphics.drawable.Drawable;
+
 import java.io.Serializable;
 
 /**
@@ -13,6 +15,8 @@ public class Gesto implements Serializable {
     private Long id;
     private String nombre;
     private String aplicacion;
+    private Drawable logoAplicacion;
+
 
     /**
      * Constructor
@@ -32,6 +36,22 @@ public class Gesto implements Serializable {
         this.nombre = nombre;
         this.aplicacion = aplicacion;
     }
+
+
+    /**
+     * Constructor
+     * @param id Id del gesto
+     * @param nombre String
+     * @param aplicacion String
+     * @param logoAplicacion Drawable
+     */
+    public Gesto(Long id, String nombre, String aplicacion, Drawable logoAplicacion) {
+        this.id = id;
+        this.nombre = nombre;
+        this.aplicacion = aplicacion;
+        this.logoAplicacion = logoAplicacion;
+    }
+
 
     /**
      * Nombre de la aplicación que se lanzará cuando se detecte el gesto
@@ -83,5 +103,22 @@ public class Gesto implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * Devuelve el logo de la aplicación
+     * @return Drawable
+     */
+    public Drawable getLogoAplicacion() {
+        return logoAplicacion;
+    }
+
+
+    /**
+     * Establece el logo de la aplicación
+     * @param logoAplicacion Drawable
+     */
+    public void setLogoAplicacion(Drawable logoAplicacion) {
+        this.logoAplicacion = logoAplicacion;
     }
 }

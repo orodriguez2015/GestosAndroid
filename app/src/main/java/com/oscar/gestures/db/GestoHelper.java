@@ -48,6 +48,7 @@ public class GestoHelper extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL("CREATE TABLE " + GestoContract.GestoEntry.TABLE_NAME + " ("
                     + GestoContract.GestoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + GestoContract.GestoEntry.NOMBRE_GESTO + " TEXT,"
+                    + GestoContract.GestoEntry.LOGO_APLICACION_GESTO + " BLOB,"
                     + GestoContract.GestoEntry.APLICACION_GESTO + " TEXT)");
 
 
@@ -98,6 +99,28 @@ public class GestoHelper extends SQLiteOpenHelper {
         }
     }
 
+
+    /**
+     * Graba una gesto en la base de datos
+     * @param gesto Gesto
+     */
+    public void deleteGesto(Gesto gesto) throws DatabaseException {
+        SQLiteDatabase db = getWritableDatabase();
+
+        try {
+            LogCat.info(ConstantsGestures.TAG,"deleteGesto init");
+            db.delete(GestoContract.GestoEntry.TABLE_NAME, GestoContract.GestoEntry._ID + "=" + gesto.getId().intValue() ,null);
+            LogCat.info(ConstantsGestures.TAG,"deleteGesto end");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+            throw new DatabaseException(GestoContract.ERROR_INSERTAR_GESTO,"Error al grabar el gesto en la base de datos: ".concat(e.getMessage()));
+        } finally {
+            if(db!=null) {
+                db.close();
+            }
+        }
+    }
 
 
     /**

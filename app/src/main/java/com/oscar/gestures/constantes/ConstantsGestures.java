@@ -19,4 +19,8 @@ public class ConstantsGestures {
 
 
     public static final Integer ERROR_ALMACENAR_GESTURE_FICHERO = -1;
+
+    public static final Integer POSICION_FRAGMENTO_LISTADO_GESTOS = 0;
+
+    public static final Integer POSICION_FRAGMENTO_FORMULARIO_NUEVO_GESTO = 1;
 }

@@ -21,10 +21,11 @@ public class GestoContract  {
      */
     public static abstract class GestoEntry implements BaseColumns {
 
-        public static final String TABLE_NAME           ="gesto";
-        public static final String ID                   = "id";
-        public static final String NOMBRE_GESTO         = "nombre";
-        public static final String APLICACION_GESTO     = "aplicacion";
+        public static final String TABLE_NAME            ="gesto";
+        public static final String ID                    = "id";
+        public static final String NOMBRE_GESTO          = "nombre";
+        public static final String APLICACION_GESTO      = "aplicacion";
+        public static final String LOGO_APLICACION_GESTO = "logoAplicacion";
     }
 
 }

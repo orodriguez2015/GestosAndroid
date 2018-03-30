@@ -27,6 +27,7 @@ public class FragmentoListadoGestos extends FragmentoPadre {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private static OnCheckRecyclerViewSelectionListener onCheckSelectionListener;
     private List<Gesto> gestos = null;
 
     private RecyclerView recyclerView;
@@ -39,12 +40,13 @@ public class FragmentoListadoGestos extends FragmentoPadre {
 
     }
 
-    public static FragmentoListadoGestos newInstance(int columnCount,List<Gesto> gestos) {
+    public static FragmentoListadoGestos newInstance(int columnCount,List<Gesto> gestos,OnCheckRecyclerViewSelectionListener listener) {
         FragmentoListadoGestos fragment = new FragmentoListadoGestos();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         fragment.setGestos(gestos);
+        onCheckSelectionListener = listener;
         return fragment;
     }
 
@@ -55,6 +57,16 @@ public class FragmentoListadoGestos extends FragmentoPadre {
      */
     public void setGestos(List<Gesto> gestos) {
         this.gestos = gestos;
+    }
+
+
+    /**
+     * Devuelve la lista de gestos seleccionados
+     * @return List<Gesto>
+     */
+    public List<Gesto> getGestosSeleccionados() {
+        GestoRecyclerViewAdapter adapter = (GestoRecyclerViewAdapter)this.recyclerView.getAdapter();
+        return adapter.getSeleccionados();
     }
 
 
@@ -89,7 +101,7 @@ public class FragmentoListadoGestos extends FragmentoPadre {
             } else {
                 this.recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            this.recyclerView.setAdapter(new GestoRecyclerViewAdapter(gestos, mListener));
+            this.recyclerView.setAdapter(new GestoRecyclerViewAdapter(gestos, mListener,onCheckSelectionListener));
         }
         return view;
     }

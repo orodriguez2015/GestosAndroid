@@ -26,14 +26,26 @@ public class ImageSpinnerAdapter extends ArrayAdapter<AplicacionVO> {
     private List<AplicacionVO> items = null;
     private Context context = null;
 
+    /**
+     * Constructor
+     * @param context    Context
+     * @param resource   int
+     * @param items      List<AplicacionVO>
+     */
     public ImageSpinnerAdapter(@NonNull Context context, int resource,List<AplicacionVO> items) {
         super(context, R.layout.spinner_item,items);
-        //se debe indicar el layout para el item que seleccionado (el que se muestra sobre el botón del botón)
-        //super(context, R.layout.spinner_item);
         this.items = items;
         this.context = context;
     }
 
+
+    /**
+     * Método que se invoca al pintar el spinner la primera vez
+     * @param position       Posicion
+     * @param convertView    Vista en la que se inyectar el spinner_item para pintar el contenido de cada item del Spinner
+     * @param parent         ViewGroup
+     * @return View
+     */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -46,14 +58,19 @@ public class ImageSpinnerAdapter extends ArrayAdapter<AplicacionVO> {
         LogCat.info(ConstantsGestures.TAG,"getView position: " + position + ", app: " +app.getNombreAplicacion());
 
         ((TextView) convertView.findViewById(R.id.textoDesplegable)).setText(app.getNombreAplicacion());
-        //((ImageView) convertView.findViewById(R.id.icono)).setBackgroundResource(datos.get(position).getIcono());
+        ((ImageView) convertView.findViewById(R.id.imagenDesplegable)).setImageDrawable(app.getIcono());
 
         return convertView;
     }
 
 
-    //gestiona la lista usando el View Holder Pattern. Equivale a la típica implementación del getView
-    //de un Adapter de un ListView ordinario
+    /**
+     * Método que se invoca al desplegar el Spinner/Desplegable
+     * @param position       Posicion
+     * @param convertView    Vista en la que se inyectar el spinner_item para pintar el contenido de cada item del Spinner
+     * @param parent         ViewGroup
+     * @return View
+     */
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -76,11 +93,10 @@ public class ImageSpinnerAdapter extends ArrayAdapter<AplicacionVO> {
 
         //rellenamos el layout con los datos de la fila que se está procesando
         AplicacionVO app = items.get(position);
-        //((ImageSpinnerHolder) row.getTag()).getIcono().setImageResource(app.getIcono());
         ((ImageSpinnerHolder) row.getTag()).getTextView().setText(app.getNombreAplicacion());
 
-        if(app.getDrawable()!=null) {
-            ((ImageSpinnerHolder) row.getTag()).getIcono().setImageDrawable(app.getDrawable());
+        if(app.getIcono()!=null) {
+            ((ImageSpinnerHolder) row.getTag()).getIcono().setImageDrawable(app.getIcono());
         }
 
         return row;

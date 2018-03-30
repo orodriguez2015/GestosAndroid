@@ -22,16 +22,19 @@ public class PlaceHolderFragment {
 
     private Context context = null;
     private OnActualizarFragmentoListener listener = null;
+    private OnCheckRecyclerViewSelectionListener onCheckRecyclerViewSelectionListener = null;
 
 
     /**
      * Constructor
      * @param context Context
      * @param listener OnActualizarFragmentoListener
+     * @param onCheckRecyclerViewSelectionListener OnCheckRecyclerViewSelectionListener
      */
-    public PlaceHolderFragment(Context context,OnActualizarFragmentoListener listener) {
+    public PlaceHolderFragment(Context context,OnActualizarFragmentoListener listener,OnCheckRecyclerViewSelectionListener onCheckRecyclerViewSelectionListener) {
         this.context = context;
         this.listener = listener;
+        this.onCheckRecyclerViewSelectionListener = onCheckRecyclerViewSelectionListener;
     }
 
 
@@ -130,7 +133,7 @@ public class PlaceHolderFragment {
                 List<Gesto> gestos = respuesta.getItems();
 
                 LogCat.info(ConstantsGestures.TAG,"getGestos numero gestos recuperados: " + gestos.size());
-                f = FragmentoListadoGestos.newInstance(1, gestos);
+                f = FragmentoListadoGestos.newInstance(1, gestos,onCheckRecyclerViewSelectionListener);
                 f.setGestos(gestos);
             }
 

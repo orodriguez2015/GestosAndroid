@@ -3,7 +3,6 @@ package com.oscar.gestures.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
-import android.database.DataSetObserver;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,7 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import com.oscar.gestures.ActividadEntrada;
 import com.oscar.gestures.ActividadNuevoGesto;
@@ -51,7 +50,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
     private String mParam2;
 
     private EditText txtNombre;
-    private EditText txtDescripcion;
     private Spinner desplegableAplicacion;
     private Button botonSiguiente;
 
@@ -90,7 +88,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         LogCat.info(ConstantsGestures.TAG," =====> FragmentoFormularioNuevoGesto.onViewCreated view: " + view);
 
         this.txtNombre = (EditText)getActivity().findViewById(R.id.txtNombreGesto);
-        this.txtDescripcion = (EditText) getActivity().findViewById(R.id.txtAplicacionGesto);
         this.desplegableAplicacion = (Spinner)getActivity().findViewById(R.id.desplegableAplicacion);
         this.botonSiguiente = (Button)getActivity().findViewById(R.id.btnSiguiente);
 
@@ -99,24 +96,11 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
          * Hint para los campos de tipo EditText
          */
         txtNombre.setHint(getString(R.string.nombre_del_gesto));
-        txtDescripcion.setHint(R.string.nombre_aplicacion);
-
 
         this.txtNombre.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
             if(v==txtNombre && !hasFocus) {
-                //TelephoneUtil.hideKeyboard(getActivity());
-                hideKeyboard();
-            }
-            }
-        });
-
-
-        this.txtDescripcion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-            if(v==txtDescripcion && !hasFocus) {
                 //TelephoneUtil.hideKeyboard(getActivity());
                 hideKeyboard();
             }
@@ -133,16 +117,16 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
             public void onClick(View v) {
                 hideKeyboard();
                 String nombre = txtNombre.getText().toString();
-                String descripcion = txtDescripcion.getText().toString();
+                AplicacionVO aplicacion = (AplicacionVO) desplegableAplicacion.getSelectedItem();
 
                 View focus = null;
                 if(StringUtils.isEmpty(nombre)) {
                     txtNombre.setError(getString(R.string.error_gesto_obligatorio));
                     focus = txtNombre;
                 } else
-                if(StringUtils.isEmpty(descripcion)) {
-                    txtDescripcion.setError(getString(R.string.error_app_obligatorio));
-                    focus = txtDescripcion;
+                if(aplicacion==null) {
+                    ((TextView)desplegableAplicacion.getSelectedView()).setError(getString(R.string.error_app_obligatorio));
+                    focus = desplegableAplicacion;
                 }
 
                 if(focus!=null) {
@@ -150,8 +134,8 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
                 }else {
                     Gesto gesto = new Gesto();
                     gesto.setNombre(txtNombre.getText().toString());
-                    gesto.setAplicacion(txtDescripcion.getText().toString());
-
+                    gesto.setAplicacion(aplicacion.getNombreAplicacion());
+                    gesto.setLogoAplicacion(aplicacion.getIcono());
                     abrirActividad(gesto);
                 }
 
@@ -178,31 +162,23 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
     }
 
 
-
-
+    /**
+     * Rellena el contenido del desplegable/Spinner con las aplicaciones instaladas en el dispositivo
+     */
     private void recargarDesplegableAplicaciones() {
         // Se recuperan las aplicaciones del teléfono para mostrar en el Spinner
 
         List<ApplicationInfo> appsInstalled = TelephoneUtil.getInstalledApplications(getActivity());
-        //List<String> nombres = new ArrayList<String>();
         List<AplicacionVO> apps = new ArrayList<AplicacionVO>();
-
 
         for (int i = 0; appsInstalled != null && i < appsInstalled.size(); i++) {
             CharSequence salida = appsInstalled.get(i).processName;
             Drawable imagen = appsInstalled.get(i).loadIcon(getActivity().getPackageManager());
-            //nombres.add(salida.toString());
-            AplicacionVO app = new AplicacionVO(salida.toString(),appsInstalled.get(i).icon);
-            app.setDrawable(imagen);
+            AplicacionVO app = new AplicacionVO(salida.toString(),imagen);
+            app.setIcono(imagen);
 
             apps.add(app);
         }
-
-
-        /*
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, nombres);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        */
 
         ImageSpinnerAdapter adapter = new ImageSpinnerAdapter(getContext(),R.id.desplegableAplicacion,apps);
         this.desplegableAplicacion.setAdapter(adapter);
@@ -235,10 +211,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
 
 
-
-
-
-
     /**
      * Oculta el teclado
      */
@@ -249,13 +221,20 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         }
     }
 
+    /**
+     * Método que carga el contenido de la vista, en este caso, del fragmento
+     * @param inflater    LayoutInflater
+     * @param container   ViewGroup
+     * @param savedInstanceState Bundle
+     * @return View
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_nuevo_gesto, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -293,137 +272,5 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-
-
-
-
-
-    private static class ItemDesplegable {
-        private String descripcion;
-        private long id;
-
-
-        public long getId() {
-            return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
-        }
-
-        public String getDescripcion() {
-            return descripcion;
-        }
-
-        public void setDescripcion(String descripcion) {
-            this.descripcion = descripcion;
-        }
-
-        public Drawable getImagen() {
-            return imagen;
-        }
-
-        public void setImagen(Drawable imagen) {
-            this.imagen = imagen;
-        }
-
-        private Drawable imagen;
-
-
-
-
-    }
-
-
-
-    private static class AdapterDesplegable implements SpinnerAdapter {
-
-        List<ItemDesplegable> items = null;
-
-        /**
-         * Constructor
-         * @param items List<ItemDesplegable>
-         */
-        public AdapterDesplegable(List<ItemDesplegable> items) {
-            this.items = items;
-        }
-
-
-        public List<ItemDesplegable> getItems() {
-            return items;
-        }
-
-        public void setItems(List<ItemDesplegable> items) {
-            this.items = items;
-        }
-
-
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            return null;
-        }
-
-        @Override
-        public void registerDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public void unregisterDataSetObserver(DataSetObserver observer) {
-
-        }
-
-        @Override
-        public int getCount() {
-            if(items!=null) {
-                return items.size();
-            }
-            return 0;
-        }
-
-        @Override
-        public Object getItem(int position) {
-            if(items!=null) {
-                return items.get(position);
-            }
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            if(items!=null) {
-                return items.get(position).getId();
-            }
-            return -1;
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return false;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            return null;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            return 0;
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return 0;
-        }
-
-        @Override
-        public boolean isEmpty() {
-            return false;
-        }
-    }
-
-
 
 }

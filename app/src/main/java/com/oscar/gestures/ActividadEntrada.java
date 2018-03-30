@@ -6,14 +6,15 @@ import android.gesture.GestureLibraries;
 import android.gesture.GestureLibrary;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.oscar.asyntask.ParametrosAsyncTask;
 import com.oscar.asyntask.RespuestaAsyncTask;
@@ -23,12 +24,12 @@ import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.fragments.FragmentoFormularioNuevoGesto;
 import com.oscar.gestures.fragments.FragmentoListadoGestos;
 import com.oscar.gestures.fragments.FragmentoVacio;
-import com.oscar.gestures.fragments.PlaceHolderFragment;
+import com.oscar.gestures.fragments.OnCheckRecyclerViewSelectionListener;
+import com.oscar.gestures.fragments.SectionsPagerAdapter;
 import com.oscar.gestures.vo.Gesto;
 import com.oscar.utilities.MessageUtils;
 import com.oscar.utilities.logcat.LogCat;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -76,19 +77,40 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getApplicationContext(),getSupportFragmentManager());
+
+        OnCheckRecyclerViewSelectionListener listener = new OnCheckRecyclerViewSelectionListener() {
+            @Override
+            public void setOnCheckSelectionListener(Object params) {
+
+
+            }
+        };
+
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getApplicationContext(),getSupportFragmentManager(),listener);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
         cargarFicheroGestos();
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Snackbar.make(view, "Gestos seleccionados "  + getNumGestosSeleccionados(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
+
     }
+
+
 
 
 
@@ -117,114 +139,13 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
     }
 
 
+
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     *
-     * <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
+     * Devuelve el número de gestos seleccionados por el usuario
+     * @return Integer
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        private Context context = null;
-        private PlaceHolderFragment placeHolderFragment = null;
-
-        OnActualizarFragmentoListener listener = null;
-        List<Fragment> fragmentos =  new ArrayList<Fragment>();
-
-
-        /**
-         *
-         * @param context Contexto de la actividad en la que se muestra el FragmentPagerAdapter
-         * @param fm FragmentManager
-         */
-        public SectionsPagerAdapter(Context context, FragmentManager fm) {
-            super(fm);
-            this.context = context;
-
-            /**
-             * Se implementa el listener que permite actualizar el contenido del ViewPager modificando
-             * un fragmento
-             */
-            listener = new OnActualizarFragmentoListener() {
-
-                @Override
-                public void actualizarFragmento(int posicion, Fragment fragment) {
-                    LogCat.info(ConstantsGestures.TAG,"OnActualizarFragmentoListener.actualizarFragmento ====>");
-
-                    /*
-                     * Se actualiza el contenido del FragmentPageAdapter
-                     */
-                    mSectionsPagerAdapter.setItem(posicion,fragment);
-                    mSectionsPagerAdapter.notifyDataSetChanged();
-
-                    /*
-                     * Se establece la nueva posición ViewPager
-                     */
-                    mViewPager.setCurrentItem(posicion);
-                    mViewPager.setAdapter(mSectionsPagerAdapter);
-
-                }
-            };
-
-            placeHolderFragment = new PlaceHolderFragment(context,listener);
-        }
-
-
-        /**
-         * Devuelve el Fragment asociado a la posición indicada por parámetro. La posición se corresponde
-         * con la página seleccionada por el usuario en el FragmentPagerAdapter
-         * @param position Posición
-         * @return Fragment
-         */
-        @Override
-        public Fragment getItem(int position) {
-            LogCat.info(ConstantsGestures.TAG," ============> getItem listener:  " + listener);
-            fragmentos.add(placeHolderFragment.getFragment(position));
-            return fragmentos.get(position);
-        }
-
-
-        /**
-         * Establece un nuevo fragment en el FragmentPagerAdapter
-         * @param position
-         * @param fragment
-         */
-        public void setItem(int position,Fragment fragment) {
-            if(position<fragmentos.size()) {
-                fragmentos.set(position, fragment);
-            }
-        }
-
-
-        /**
-         * Número total de páginas del componente
-         * @return
-         */
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return ConstantsGestures.NUMERO_OPCIONES_FRAGMENTOS;
-
-        }
-
-        /**
-         * Devuelve el título
-         * @param position
-         * @return
-         */
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getString(R.string.listado_gestos);
-                case 1:
-                    return getString(R.string.nuevo_gesto);
-                case 2:
-
-                    return "";
-            }
-            return null;
-        }
+    private Integer getNumGestosSeleccionados() {
+        return this.mSectionsPagerAdapter.getNumItemsSeleccionados();
     }
 
 
@@ -234,13 +155,10 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
      */
     public void recargarListadoGestos() {
         LogCat.info(ConstantsGestures.TAG," recargarListadoGestos ===>");
-        //cargarFicheroGestos();
-
 
         /*
-         * Se ejecuta
+         * Se recupera de la base de datos la lista de gestos
          */
-
         try {
             ParametrosAsyncTask<Context> params = new ParametrosAsyncTask<Context>(getApplicationContext());
             RecuperarGestosAsyncTask task = new RecuperarGestosAsyncTask();
@@ -260,7 +178,6 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
                 /*
                  * Se pasan los gestos al Fragmento
                 */
-                //fragmentoListadoGestos.getAdapter().setItems(this.ficheroGestos.getGestos());
                 fragmentoListadoGestos.getAdapter().setItems(gestos);
                 fragmentoListadoGestos.getAdapter().notifyDataSetChanged();
 
@@ -270,14 +187,9 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
                 this.mViewPager.setCurrentItem(0);
             }
 
-        }catch(Exception e) {
+        } catch(Exception e) {
             e.printStackTrace();
         }
-
-
-
-
-
     }
 
 
