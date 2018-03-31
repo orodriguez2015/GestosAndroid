@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 
 import com.oscar.asyntask.ParametrosAsyncTask;
 import com.oscar.asyntask.RespuestaAsyncTask;
-import com.oscar.gestures.db.GestoHelper;
+import com.oscar.gestures.facade.GestoFacade;
 import com.oscar.gestures.vo.Gesto;
 import com.oscar.utilities.exception.DatabaseException;
 
@@ -28,10 +28,9 @@ public class RecuperarGestosAsyncTask extends AsyncTask<ParametrosAsyncTask,Void
         Context context = (Context)params[0].getParametro();
 
         if(context!=null) {
-            GestoHelper helper = new GestoHelper(context);
-
             try {
-                List<Gesto> gestos = helper.getGestos();
+                List<Gesto> gestos = GestoFacade.getInstance().getGestos(context);
+
                 respuesta = new RespuestaAsyncTask(0, "OK");
                 respuesta.setItems(gestos);
 
