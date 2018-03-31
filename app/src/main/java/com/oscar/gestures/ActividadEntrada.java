@@ -7,7 +7,6 @@ import android.gesture.GestureLibrary;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,6 +20,7 @@ import com.oscar.asyntask.RespuestaAsyncTask;
 import com.oscar.gestures.asyntask.RecuperarGestosAsyncTask;
 import com.oscar.gestures.configuracion.fichero.FicheroGestos;
 import com.oscar.gestures.constantes.ConstantsGestures;
+import com.oscar.gestures.dialog.AceptarBorradoGestosDialogInterface;
 import com.oscar.gestures.fragments.FragmentoFormularioNuevoGesto;
 import com.oscar.gestures.fragments.FragmentoListadoGestos;
 import com.oscar.gestures.fragments.FragmentoVacio;
@@ -28,6 +28,9 @@ import com.oscar.gestures.fragments.OnCheckRecyclerViewSelectionListener;
 import com.oscar.gestures.fragments.SectionsPagerAdapter;
 import com.oscar.gestures.vo.Gesto;
 import com.oscar.utilities.MessageUtils;
+import com.oscar.utilities.dialog.AlertDialogHelper;
+import com.oscar.utilities.dialog.BtnAceptarCancelarDialogGenerico;
+import com.oscar.utilities.dialog.ParamsAlertDialogVO;
 import com.oscar.utilities.logcat.LogCat;
 
 import java.util.HashMap;
@@ -78,11 +81,44 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
         // primary sections of the activity.
 
 
+        // FloatingActionButton
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        /*
+         * LISTENER PARA EL FLOATING ACTION BUTTON
+         */
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ParamsAlertDialogVO params = new ParamsAlertDialogVO(ActividadEntrada.this,getString(R.string.pregunta_eliminar_gestos_seleccionados),getString(R.string.txt_atencion),getString(R.string.txt_dialogo_aceptar),getString(R.string.txt_dialogo_cancelar));
+
+                AceptarBorradoGestosDialogInterface callbackAceptar = new AceptarBorradoGestosDialogInterface(getGestosSeleccionados());
+
+                AlertDialogHelper.crearDialogoAlertaConfirmacion(params,callbackAceptar,new BtnAceptarCancelarDialogGenerico()).show();
+
+
+            }
+        });
+
+
+
+
+        /*
+         * LISTENER PARA DETECTAR CUANDO EL USUARIO PULSA EL CHECK DE UN GESTO, Y HABILITAR EL FLOATING BUTTON ACTION
+         */
         OnCheckRecyclerViewSelectionListener listener = new OnCheckRecyclerViewSelectionListener() {
             @Override
             public void setOnCheckSelectionListener(Object params) {
+                if(fab!=null) {
+                    LogCat.info(ConstantsGestures.TAG,"Se ha seleccionado objetos");
+                    fab.setVisibility(View.INVISIBLE);
 
+                    if(params instanceof Integer && ((Integer)params)>0) {
+                        fab.setVisibility(View.VISIBLE);
+                    }
 
+                }
             }
         };
 
@@ -97,16 +133,6 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
 
         cargarFicheroGestos();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Snackbar.make(view, "Gestos seleccionados "  + getNumGestosSeleccionados(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-
-            }
-        });
 
     }
 
@@ -147,6 +173,16 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
     private Integer getNumGestosSeleccionados() {
         return this.mSectionsPagerAdapter.getNumItemsSeleccionados();
     }
+
+
+    /**
+     * Devuelve los gestos seleccionados por el usuario
+     * @return List<Gesto>
+     */
+    private List<Gesto> getGestosSeleccionados() {
+        return (List<Gesto>)this.mSectionsPagerAdapter.getListaItemsSeleccionados();
+    }
+
 
 
     /**

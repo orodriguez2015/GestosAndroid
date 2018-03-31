@@ -104,7 +104,7 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
                 }
 
                 if(onCheckSelectionListener!=null) {
-                    onCheckSelectionListener.setOnCheckSelectionListener(isChecked);
+                    onCheckSelectionListener.setOnCheckSelectionListener(getSeleccionados().size());
                 }
             }
         });
