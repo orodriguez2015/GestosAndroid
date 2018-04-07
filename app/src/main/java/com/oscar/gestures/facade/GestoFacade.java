@@ -47,8 +47,14 @@ public class GestoFacade {
 
         GestoHelper helper = new GestoHelper(context);
 
-        for(int i=0;gestos!=null && i<gestos.size();i++) {
-            helper.deleteGesto(gestos.get(i));
+        try {
+            for (int i = 0; gestos != null && i < gestos.size(); i++) {
+                helper.deleteGesto(gestos.get(i));
+            }
+
+
+        }catch(DatabaseException e) {
+
         }
 
         return exito;

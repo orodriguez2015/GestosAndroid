@@ -42,6 +42,8 @@ public class ParamsAlertDialogVO {
         this.cancelar = cancelar;
     }
 
+
+
     /**
      * Devuelve el mensaje a mostrar en el AlertDialog
      * @return String

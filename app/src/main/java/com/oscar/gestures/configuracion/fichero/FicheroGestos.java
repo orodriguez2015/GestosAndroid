@@ -30,6 +30,7 @@ public class FicheroGestos {
    private boolean ficheroGestosCreado = false;
    private GestureLibrary gestureLibrary = null;
 
+
     /**
      * Constructor que crea el fichero de gestos sino existe
      * @throws FileException
@@ -72,6 +73,19 @@ public class FicheroGestos {
    }
 
 
+    /**
+     * Comprueba si está cargado el fichero de gestos
+     * @return boolean
+     */
+   public static boolean estaCargadoFicheroGestos() {
+       boolean exito = false;
+
+       if(instance!=null) {
+            exito = true;
+       }
+
+       return exito;
+   }
 
     /**
      * Crear el fichero de gestos si no existe. Es necesario pasar a la operación el objeto File con la

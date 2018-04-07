@@ -90,13 +90,10 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 ParamsAlertDialogVO params = new ParamsAlertDialogVO(ActividadEntrada.this,getString(R.string.pregunta_eliminar_gestos_seleccionados),getString(R.string.txt_atencion),getString(R.string.txt_dialogo_aceptar),getString(R.string.txt_dialogo_cancelar));
 
-                AceptarBorradoGestosDialogInterface callbackAceptar = new AceptarBorradoGestosDialogInterface(getGestosSeleccionados());
-
+                AceptarBorradoGestosDialogInterface callbackAceptar = new AceptarBorradoGestosDialogInterface(ActividadEntrada.this,getGestosSeleccionados());
                 AlertDialogHelper.crearDialogoAlertaConfirmacion(params,callbackAceptar,new BtnAceptarCancelarDialogGenerico()).show();
-
 
             }
         });

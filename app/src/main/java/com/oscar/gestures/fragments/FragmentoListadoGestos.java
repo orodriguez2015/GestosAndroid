@@ -79,8 +79,8 @@ public class FragmentoListadoGestos extends FragmentoPadre {
         }
 
         /*
-             * Se oculta el teclado si está visible
-             */
+         * Se oculta el teclado si está visible
+         */
         TelephoneUtil.hideKeyboard(getActivity());
     }
 
