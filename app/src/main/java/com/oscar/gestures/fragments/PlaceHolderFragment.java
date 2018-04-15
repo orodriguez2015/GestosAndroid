@@ -118,10 +118,6 @@ public class PlaceHolderFragment {
             /**
              * Se recupera los gestos almacenados en el fichero de gestos
              */
-            //FicheroGestos ficheroGestos = FicheroGestos.getInstance(null);
-            //ficheroGestos.mostrarGestos();
-            //List<Gesto> gestos = ficheroGestos.getGestos();
-
             ParametrosAsyncTask<Context> params = new ParametrosAsyncTask<Context>(context);
             RecuperarGestosAsyncTask task = new RecuperarGestosAsyncTask();
             task.execute(params);

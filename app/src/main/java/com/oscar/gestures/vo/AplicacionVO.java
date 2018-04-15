@@ -8,8 +8,9 @@ import android.graphics.drawable.Drawable;
  */
 public class AplicacionVO {
 
+    private Boolean valorPorDefecto = false;
     private String nombreAplicacion;
-    private Drawable icono;
+    private transient Drawable icono;
 
 
     /**
@@ -20,6 +21,7 @@ public class AplicacionVO {
     public AplicacionVO(String nombreAplicacion, Drawable icono) {
         this.nombreAplicacion = nombreAplicacion;
         this.icono = icono;
+        this.valorPorDefecto = false;
     }
 
 
@@ -54,4 +56,22 @@ public class AplicacionVO {
     public void setIcono(Drawable icono) {
         this.icono = icono;
     }
+
+
+    /**
+     * True si el objeto es un valor por defecto de un conjunto de objetos de tipo AplicacionVO
+     * @return boolean
+     */
+    public Boolean isValorPorDefecto() {
+        return valorPorDefecto;
+    }
+
+    /**
+     * Establece el valor por defecto
+     * @param valorPorDefecto boolean
+     */
+    public void setValorPorDefecto(Boolean valorPorDefecto) {
+        this.valorPorDefecto = valorPorDefecto;
+    }
+
 }

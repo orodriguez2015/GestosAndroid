@@ -53,12 +53,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 setItem(posicion,fragment);
                 notifyDataSetChanged();
 
-                /*
-                 * Se establece la nueva posición ViewPager
-                 */
-                //mViewPager.setCurrentItem(posicion);
-                //mViewPager.setAdapter(mSectionsPagerAdapter);
-
             }
         };
 

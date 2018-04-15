@@ -124,7 +124,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
                     txtNombre.setError(getString(R.string.error_gesto_obligatorio));
                     focus = txtNombre;
                 } else
-                if(aplicacion==null) {
+                if(aplicacion==null || aplicacion.isValorPorDefecto()) {
                     ((TextView)desplegableAplicacion.getSelectedView()).setError(getString(R.string.error_app_obligatorio));
                     focus = desplegableAplicacion;
                 }
@@ -132,10 +132,13 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
                 if(focus!=null) {
                     focus.setFocusable(true);
                 }else {
+
+                    vaciarFormulario();
+
                     Gesto gesto = new Gesto();
                     gesto.setNombre(txtNombre.getText().toString());
                     gesto.setAplicacion(aplicacion.getNombreAplicacion());
-                    gesto.setLogoAplicacion(aplicacion.getIcono());
+                    //gesto.setLogoAplicacion(aplicacion.getIcono());
                     abrirActividad(gesto);
                 }
 
@@ -149,6 +152,14 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
 
     /**
+     * Vacia el formulario
+     */
+    private void vaciarFormulario() {
+        this.txtNombre.setText("");
+        this.desplegableAplicacion.setSelection(0);
+    }
+
+    /**
      * Abre la actividad en la que se detecta el gesto, y se le pasa el gesto en el Intent
      * @param gesto Gesto
      */
@@ -158,7 +169,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
             intent.putExtra(ConstantsGestures.PARAMETRO_GESTO_INTENT,gesto);
             startActivityForResult(intent,ConstantsGestures.RESULTADO_ACTIVIDAD_ALTA_GESTO);
         }
-
     }
 
 
@@ -174,12 +184,17 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         for (int i = 0; appsInstalled != null && i < appsInstalled.size(); i++) {
             CharSequence salida = appsInstalled.get(i).processName;
             Drawable imagen = appsInstalled.get(i).loadIcon(getActivity().getPackageManager());
+
             AplicacionVO app = new AplicacionVO(salida.toString(),imagen);
             app.setIcono(imagen);
 
             apps.add(app);
         }
 
+
+        AplicacionVO app = new AplicacionVO(getString(R.string.selecciona_aplicacion),null);
+        app.setValorPorDefecto(true);
+        apps.add(0,app);
         ImageSpinnerAdapter adapter = new ImageSpinnerAdapter(getContext(),R.id.desplegableAplicacion,apps);
         this.desplegableAplicacion.setAdapter(adapter);
     }
@@ -269,7 +284,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onFragmentInteraction(Uri uri);
     }
 

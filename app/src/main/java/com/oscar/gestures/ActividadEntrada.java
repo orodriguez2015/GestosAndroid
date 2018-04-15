@@ -75,13 +75,9 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
          */
         setTitle(getString(R.string.title_detector_gestos));
 
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-
-
-        // FloatingActionButton
+        /*
+         * FloatingActionButton
+         */
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         /*
@@ -100,7 +96,6 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
 
 
 
-
         /*
          * LISTENER PARA DETECTAR CUANDO EL USUARIO PULSA EL CHECK DE UN GESTO, Y HABILITAR EL FLOATING BUTTON ACTION
          */
@@ -116,7 +111,7 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
                     }
 
                 }
-            }
+            }// setOnCheckSelectionListener
         };
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getApplicationContext(),getSupportFragmentManager(),listener);
@@ -127,6 +122,39 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                LogCat.info(ConstantsGestures.TAG,"Tab seleccionada posicion: " + tab.getPosition());
+
+                fab.setVisibility(View.INVISIBLE);
+                /*
+                 * Si la Tab seleccionado es distinto de cero y el FloatingActionButton está visible, entonces
+                 * se oculta ya que sólo tiene que estar visible en el primer Tab
+                 */
+                if(tab.getPosition()!=ConstantsGestures.PRIMERA_POSICION_TAB_LAYOUT && fab.getVisibility()==View.VISIBLE) {
+                    fab.setVisibility(View.INVISIBLE);
+                }
+
+                /**
+                 * Si se la seleccionado el Tab de la primera posición,que muestra el listado de gestos, y
+                 */
+                if(tab.getPosition()==ConstantsGestures.PRIMERA_POSICION_TAB_LAYOUT && mSectionsPagerAdapter.getListaItemsSeleccionados().size()>0) {
+                    fab.setVisibility(View.VISIBLE);
+                }
+
+            }// onTabSelected
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         cargarFicheroGestos();
 
@@ -235,62 +263,14 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
 
             ficheroGestos = FicheroGestos.getInstance(getFilesDir());
             String pathFicheroGestos = ficheroGestos.getPathFicheroGestos();
-
             gestureLibrary = GestureLibraries.fromFile(pathFicheroGestos);
-            //gestureLibrary = GestureLibraries.fromRawResource(getBaseContext(),R.raw.gestures);
+
             if(!gestureLibrary.load()) {
                 MessageUtils.showToast(this,"No se ha cargado el archivo de gestos",20);
                 LogCat.info(ConstantsGestures.TAG,"No se ha cargado el archivo de gestos");
-                //finish();
+
             } else {
-
-                /*
-                this.gestureLibrary.removeEntry("g");
-                this.gestureLibrary.removeEntry("H");
-                this.gestureLibrary.removeEntry("e");
-                this.gestureLibrary.removeEntry("5");
-                this.gestureLibrary.removeEntry("q");
-                this.gestureLibrary.removeEntry("G");
-                this.gestureLibrary.removeEntry("v");
-                this.gestureLibrary.removeEntry("a");
-                this.gestureLibrary.removeEntry("R");
-                this.gestureLibrary.removeEntry("o");
-                this.gestureLibrary.removeEntry("6");
-                this.gestureLibrary.removeEntry("Z");
-                this.gestureLibrary.removeEntry("4");
-                this.gestureLibrary.removeEntry("7");
-                this.gestureLibrary.removeEntry("T");
-                this.gestureLibrary.removeEntry("1");
-                this.gestureLibrary.removeEntry("z");
-                this.gestureLibrary.removeEntry("x");
-                this.gestureLibrary.removeEntry("0");
-                this.gestureLibrary.removeEntry("C");
-                this.gestureLibrary.removeEntry("clear_search_text");
-                this.gestureLibrary.removeEntry("m");
-                this.gestureLibrary.removeEntry("F");
-                this.gestureLibrary.removeEntry("h");
-                this.gestureLibrary.removeEntry("w");
-                this.gestureLibrary.removeEntry("i");
-                this.gestureLibrary.removeEntry("Q");
-                this.gestureLibrary.removeEntry("del_one_char");
-                this.gestureLibrary.removeEntry("f");
-                this.gestureLibrary.removeEntry("r");
-                this.gestureLibrary.removeEntry("B");
-                this.gestureLibrary.removeEntry("n");
-                this.gestureLibrary.removeEntry("s");
-                this.gestureLibrary.removeEntry("2");
-                this.gestureLibrary.removeEntry("u");
-                this.gestureLibrary.removeEntry("l");
-                this.gestureLibrary.removeEntry("8");
-                this.gestureLibrary.removeEntry("b");
-                this.gestureLibrary.removeEntry("t");
-                this.gestureLibrary.removeEntry("p");
-                this.gestureLibrary.removeEntry("C");
-                this.gestureLibrary.removeEntry("c");
-                */
-
                 mostrarGestos(this.gestureLibrary);
-
             }
         }catch(Exception e) {
             e.printStackTrace();
@@ -338,7 +318,7 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
      * @param item
      */
     public void onListFragmentInteraction(Gesto item) {
-        LogCat.info(ConstantsGestures.TAG,"onListFragmentInteraction");
+        LogCat.info(ConstantsGestures.TAG," ********** onListFragmentInteraction item: *****");
     }
 
 
@@ -349,7 +329,7 @@ public class ActividadEntrada extends AppCompatActivity implements FragmentoForm
      * @param uri Uri
      */
     public void onFragmentInteraction(Uri uri){
-        LogCat.info(ConstantsGestures.TAG,"onFragmentInteraction uri: " + uri);
+        LogCat.info(ConstantsGestures.TAG,"************* onFragmentInteraction uri:  ************** " + uri);
     }
 
 

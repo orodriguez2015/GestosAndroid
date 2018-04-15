@@ -90,6 +90,8 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
         });
 
 
+        holder.checkboxGesto.setChecked(false);
+
         /*
          * Evento de detección de selección del check de un item
          */

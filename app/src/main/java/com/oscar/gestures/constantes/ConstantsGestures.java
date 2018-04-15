@@ -23,4 +23,6 @@ public class ConstantsGestures {
     public static final Integer POSICION_FRAGMENTO_LISTADO_GESTOS = 0;
 
     public static final Integer POSICION_FRAGMENTO_FORMULARIO_NUEVO_GESTO = 1;
+
+    public static final int PRIMERA_POSICION_TAB_LAYOUT = 0;
 }
