@@ -3,6 +3,8 @@ package com.oscar.gestures.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import com.oscar.utilities.StringUtils;
 import com.oscar.utilities.TelephoneUtil;
 import com.oscar.utilities.logcat.LogCat;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,13 +135,24 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
                 if(focus!=null) {
                     focus.setFocusable(true);
                 }else {
-
                     vaciarFormulario();
 
                     Gesto gesto = new Gesto();
-                    gesto.setNombre(txtNombre.getText().toString());
+                    gesto.setNombre(nombre);
                     gesto.setAplicacion(aplicacion.getNombreAplicacion());
-                    //gesto.setLogoAplicacion(aplicacion.getIcono());
+                    Drawable icono = aplicacion.getIcono();
+
+                    /**
+                     * Se comprueba si el Bitmap es un BitmapDrawable, de este
+                     */
+                    if(icono instanceof BitmapDrawable) {
+
+                        Bitmap bitmap = ((BitmapDrawable) icono).getBitmap();
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        byte[] datos = baos.toByteArray();
+                        gesto.setLogoAplicacion(datos);
+                    }
                     abrirActividad(gesto);
                 }
 
@@ -167,6 +181,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         Intent intent = new Intent(getActivity(),ActividadNuevoGesto.class);
         if(gesto!=null) {
             intent.putExtra(ConstantsGestures.PARAMETRO_GESTO_INTENT,gesto);
+
             startActivityForResult(intent,ConstantsGestures.RESULTADO_ACTIVIDAD_ALTA_GESTO);
         }
     }

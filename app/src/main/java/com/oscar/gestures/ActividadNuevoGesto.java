@@ -45,15 +45,12 @@ public class ActividadNuevoGesto extends AppCompatActivity implements GestureOve
         GestureOverlayView gestures = (GestureOverlayView) findViewById(R.id.gestures);
         gestures.addOnGesturePerformedListener(this);
 
-
         /*
          * Se recupera el objeto de la clase Gesto pasado en el Intent
          */
         Bundle params = getIntent().getExtras();
         gesto = (Gesto)params.getSerializable(ConstantsGestures.PARAMETRO_GESTO_INTENT);
-        if(gesto!=null) {
-            LogCat.info(ConstantsGestures.TAG, "gesto.nombre: " + gesto.getNombre());
-        }
+
     }
 
     /**

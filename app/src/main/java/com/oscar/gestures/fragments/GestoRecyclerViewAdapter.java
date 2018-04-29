@@ -6,11 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.oscar.gestures.R;
+import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.fragments.FragmentoListadoGestos.OnListFragmentInteractionListener;
 import com.oscar.gestures.vo.Gesto;
+import com.oscar.utilities.ImageUtils;
+import com.oscar.utilities.logcat.LogCat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,8 +79,9 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.mItem = items.get(position);
-        holder.mIdView.setText(items.get(position).getNombre() + " " + items.get(position).getAplicacion());
+        holder.item = items.get(position);
+        holder.txtNombreGesto.setText(items.get(position).getNombre());
+        holder.txtNombreAplicacion.setText(items.get(position).getAplicacion());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +89,7 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.item);
                 }
             }
         });
@@ -110,6 +115,20 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
                 }
             }
         });
+
+        LogCat.info(ConstantsGestures.TAG,"holder.item.getId(): " + holder.item.getId());
+        LogCat.info(ConstantsGestures.TAG,"holder.item.getNombre(): " + holder.item.getNombre());
+        LogCat.info(ConstantsGestures.TAG,"holder.item.getAplicacion(): " + holder.item.getAplicacion());
+
+        LogCat.info(ConstantsGestures.TAG,"holder.item.getLogoApliczion: " + holder.item.getLogoAplicacion());
+
+        LogCat.info(ConstantsGestures.TAG,"holder.item.getLogoApliczion.tostring: " +holder.item.getLogoAplicacion().toString());
+        if(holder.item.getLogoAplicacion()!=null) {
+
+            holder.imageViewLogoAplicacion.setImageDrawable(ImageUtils.convert(holder.item.getLogoAplicacion()));
+            holder.imageViewLogoAplicacion.refreshDrawableState();
+
+        }
     }
 
     @Override
@@ -119,22 +138,24 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public Gesto mItem;
+        public final TextView txtNombreGesto;
+        public final TextView txtNombreAplicacion;
+        public Gesto item;
         public CheckBox checkboxGesto;
+        public ImageView imageViewLogoAplicacion;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
-            checkboxGesto = (CheckBox)view.findViewById(R.id.gesto_item_checkbox);
+            txtNombreGesto = (TextView) view.findViewById(R.id.txtNombreGesto);
+            txtNombreAplicacion = (TextView) view.findViewById(R.id.txtNombreAplicacion);
+            checkboxGesto = (CheckBox)view.findViewById(R.id.gestoCheckbox);
+            imageViewLogoAplicacion = (ImageView)view.findViewById(R.id.gestoLogoAplicacion);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + txtNombreAplicacion.getText() + "'";
         }
     }
 

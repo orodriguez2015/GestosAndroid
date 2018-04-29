@@ -1,7 +1,5 @@
 package com.oscar.gestures.vo;
 
-import android.graphics.drawable.Drawable;
-
 import java.io.Serializable;
 
 /**
@@ -15,7 +13,7 @@ public class Gesto implements Serializable {
     private Long id;
     private String nombre;
     private String aplicacion;
-    private Drawable logoAplicacion;
+    private byte[] logoAplicacion;
 
 
     /**
@@ -43,9 +41,9 @@ public class Gesto implements Serializable {
      * @param id Id del gesto
      * @param nombre String
      * @param aplicacion String
-     * @param logoAplicacion Drawable
+     * @param logoAplicacion byte[]
      */
-    public Gesto(Long id, String nombre, String aplicacion, Drawable logoAplicacion) {
+    public Gesto(Long id, String nombre, String aplicacion, byte[] logoAplicacion) {
         this.id = id;
         this.nombre = nombre;
         this.aplicacion = aplicacion;
@@ -107,9 +105,9 @@ public class Gesto implements Serializable {
 
     /**
      * Devuelve el logo de la aplicación
-     * @return Drawable
+     * @return byte[]
      */
-    public Drawable getLogoAplicacion() {
+    public byte[] getLogoAplicacion() {
         return logoAplicacion;
     }
 
@@ -118,7 +116,8 @@ public class Gesto implements Serializable {
      * Establece el logo de la aplicación
      * @param logoAplicacion Drawable
      */
-    public void setLogoAplicacion(Drawable logoAplicacion) {
+    public void setLogoAplicacion(byte[] logoAplicacion) {
         this.logoAplicacion = logoAplicacion;
     }
+
 }
