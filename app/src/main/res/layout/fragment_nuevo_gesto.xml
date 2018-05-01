@@ -44,7 +44,7 @@
 
             </Spinner>
 
-
+<!--
             <TextView
                 android:id="@+id/error_text_spinner"
                 android:layout_width="match_parent"
@@ -54,6 +54,7 @@
                 android:textColor="#000000"
                 android:text="prueba"
                 android:background="#F0F0F0"/>
+                -->
 
 
             <Button

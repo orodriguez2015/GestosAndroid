@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 
 /**
+ * Clase con operaciones de utilidad
  * Created by oscar on 27/08/16.
  */
 public class AlertDialogHelper  {

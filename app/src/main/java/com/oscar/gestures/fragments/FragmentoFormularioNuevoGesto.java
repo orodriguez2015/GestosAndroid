@@ -90,7 +90,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         this.txtNombre = (EditText)getActivity().findViewById(R.id.txtNombreGesto);
         this.desplegableAplicacion = (Spinner)getActivity().findViewById(R.id.desplegableAplicacion);
         this.botonSiguiente = (Button)getActivity().findViewById(R.id.btnSiguiente);
-        this.errorTextView = (TextView)getActivity().findViewById(R.id.error_text_spinner);
+        //this.errorTextView = (TextView)getActivity().findViewById(R.id.error_text_spinner);
 
         /*
          * Hint para los campos de tipo EditText
@@ -126,7 +126,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
                 } else
                 if(aplicacion==null || aplicacion.isValorPorDefecto()) {
                     //errorTextView.setVisibility(View.VISIBLE);
-                    errorTextView.setError("Mierda " + getString(R.string.error_gesto_obligatorio));
+                    //errorTextView.setError("Mierda " + getString(R.string.error_gesto_obligatorio));
 
                     focus = desplegableAplicacion;
                 }
@@ -160,7 +160,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
      */
     private void vaciarFormulario() {
         this.txtNombre.setText("");
-        this.errorTextView.setError(null);
         this.desplegableAplicacion.setSelection(0);
     }
 
