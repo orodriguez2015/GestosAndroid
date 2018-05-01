@@ -102,7 +102,7 @@ public class FragmentoListadoGestos extends FragmentoPadre {
                 this.recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            GestoRecyclerViewAdapter adapter = new GestoRecyclerViewAdapter(gestos, mListener,onCheckSelectionListener);
+            GestoRecyclerViewAdapter adapter = new GestoRecyclerViewAdapter(getContext(),gestos, mListener,onCheckSelectionListener);
             this.recyclerView.setAdapter(adapter);
 
 

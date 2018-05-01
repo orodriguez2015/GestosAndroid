@@ -106,7 +106,7 @@ public class ImageSpinnerAdapter extends ArrayAdapter<AplicacionVO> {
      * Holder para el Adapter del Spinner
      * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
      */
-    private static class ImageSpinnerHolder {
+    public static class ImageSpinnerHolder {
 
         private ImageView icono;
 

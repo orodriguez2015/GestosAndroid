@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.IntDef;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -113,21 +115,34 @@ public class TelephoneUtil {
             final PackageManager pm = actividad.getPackageManager();
             packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
-            for (ApplicationInfo packageInfo : packages) {
-                LogCat.info(Constantes.TAG_UTILITIES, "Installed package :" + packageInfo.packageName);
-                LogCat.info(Constantes.TAG_UTILITIES, "Installed package permission :" + packageInfo.permission);
-
-
-                LogCat.info(Constantes.TAG_UTILITIES, "Installed package sourceDir :" + packageInfo.sourceDir);
-                LogCat.info(Constantes.TAG_UTILITIES, "Installed package dataDir :" + packageInfo.dataDir);
-                LogCat.info(Constantes.TAG_UTILITIES, "packageInfo: " + packageInfo);
-            }// for
-
         }catch(Exception e) {
             LogCat.error(Constantes.TAG_UTILITIES,"Error al recuperar la lista de apps instaladas en el dispositivo: " + e.getMessage());
         }
 
         return packages;
+    }
+
+
+    /**
+     * Devuelve el logo de una determinada aplicación instalada en el dispostivo
+     * @param appName Nombre de la aplicación
+     * @param context Context
+     * @return Drawable
+     */
+    public static Drawable getLogoApplication(String appName,Context context) {
+        Drawable logo = null;
+        try {
+
+            ApplicationInfo app = context.getPackageManager().getApplicationInfo(appName, 0);
+            if(app!=null) {
+                logo = context.getPackageManager().getApplicationIcon(app);
+            }
+
+        }catch(Exception e) {
+            LogCat.error(Constantes.TAG_UTILITIES,"Error al recuperar la lista de apps instaladas en el dispositivo: " + e.getMessage());
+        }
+
+        return logo;
     }
 
 

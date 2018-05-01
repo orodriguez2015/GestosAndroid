@@ -31,6 +31,9 @@
     <string name="txt_atencion">Atención</string>
     <string name="selecciona_aplicacion">Selecciona una aplicación</string>
 
+    <string name="nombre_gesto_corto">Nombre:</string>
+    <string name="nombre_aplicacion_corto">Aplicación:</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="dibuja_gesto">Dibuja el gesto</string>

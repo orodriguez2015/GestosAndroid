@@ -16,7 +16,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.oscar.gestures.ActividadEntrada;
 import com.oscar.gestures.ActividadNuevoGesto;
@@ -128,7 +127,16 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
                     focus = txtNombre;
                 } else
                 if(aplicacion==null || aplicacion.isValorPorDefecto()) {
-                    ((TextView)desplegableAplicacion.getSelectedView()).setError(getString(R.string.error_app_obligatorio));
+
+                    Object obj = desplegableAplicacion.getTag();
+                    View root = desplegableAplicacion.getRootView();
+                    if(root!=null) {
+                        System.out.println("root !=null " + root.getClass().getName());
+                        
+                    }else {
+                        System.out.println("root ==null ");
+                    }
+
                     focus = desplegableAplicacion;
                 }
 
@@ -163,6 +171,9 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
         recargarDesplegableAplicaciones();
     }
+
+
+
 
 
     /**

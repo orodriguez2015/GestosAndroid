@@ -1,5 +1,6 @@
 package com.oscar.gestures.fragments;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.oscar.gestures.R;
-import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.fragments.FragmentoListadoGestos.OnListFragmentInteractionListener;
 import com.oscar.gestures.vo.Gesto;
-import com.oscar.utilities.ImageUtils;
-import com.oscar.utilities.logcat.LogCat;
+import com.oscar.utilities.TelephoneUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +29,7 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
     private List<Gesto> seleccionados;
     private final OnListFragmentInteractionListener mListener;
     private OnCheckRecyclerViewSelectionListener onCheckSelectionListener = null;
+    private Context context;
 
     /**
      * Constructor
@@ -37,11 +37,12 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
      * @param listener OnListFragmentInteractionListener
      * @param onCheckSelectionListener OnCheckSelectionListener
      */
-    public GestoRecyclerViewAdapter(List<Gesto> items, OnListFragmentInteractionListener listener,OnCheckRecyclerViewSelectionListener onCheckSelectionListener) {
+    public GestoRecyclerViewAdapter(Context context, List<Gesto> items, OnListFragmentInteractionListener listener, OnCheckRecyclerViewSelectionListener onCheckSelectionListener) {
         this.items = items;
         this.mListener = listener;
         this.onCheckSelectionListener = onCheckSelectionListener;
-        seleccionados = new ArrayList<Gesto>();
+        this.seleccionados = new ArrayList<Gesto>();
+        this.context = context;
     }
 
     @Override
@@ -80,8 +81,13 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         holder.item = items.get(position);
-        holder.txtNombreGesto.setText(items.get(position).getNombre());
-        holder.txtNombreAplicacion.setText(items.get(position).getAplicacion());
+
+        // Se concatena al nombre del gesto y de la aplicación, el texto que ya exista en los TextView
+        String nombre = this.context.getString(R.string.nombre_gesto_corto) + " " + items.get(position).getNombre();
+        String descripcion = this.context.getString(R.string.nombre_aplicacion_corto) + " " + items.get(position).getAplicacion();
+
+        holder.txtNombreGesto.setText(nombre);
+        holder.txtNombreAplicacion.setText(descripcion);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,26 +122,22 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
             }
         });
 
-        LogCat.info(ConstantsGestures.TAG,"holder.item.getId(): " + holder.item.getId());
-        LogCat.info(ConstantsGestures.TAG,"holder.item.getNombre(): " + holder.item.getNombre());
-        LogCat.info(ConstantsGestures.TAG,"holder.item.getAplicacion(): " + holder.item.getAplicacion());
-
-        LogCat.info(ConstantsGestures.TAG,"holder.item.getLogoApliczion: " + holder.item.getLogoAplicacion());
-
-        LogCat.info(ConstantsGestures.TAG,"holder.item.getLogoApliczion.tostring: " +holder.item.getLogoAplicacion().toString());
-        if(holder.item.getLogoAplicacion()!=null) {
-
-            holder.imageViewLogoAplicacion.setImageDrawable(ImageUtils.convert(holder.item.getLogoAplicacion()));
-            holder.imageViewLogoAplicacion.refreshDrawableState();
-
-        }
+        holder.imageViewLogoAplicacion.setImageDrawable(TelephoneUtil.getLogoApplication(holder.item.getAplicacion(),this.context));
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        if(items!=null) {
+            return items.size();
+        }
+
+        return 0;
     }
 
+    /**
+     * Clase ViewHolder que crea los componentes de la interfaz de usuario, a partir de la descripción de los mismos
+     * del fichero fragment_item.xml
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView txtNombreGesto;
@@ -158,7 +160,5 @@ public class GestoRecyclerViewAdapter extends RecyclerView.Adapter<GestoRecycler
             return super.toString() + " '" + txtNombreAplicacion.getText() + "'";
         }
     }
-
-
 
 }
