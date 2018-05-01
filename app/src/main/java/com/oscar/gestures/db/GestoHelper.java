@@ -151,7 +151,7 @@ public class GestoHelper extends SQLiteOpenHelper {
                     gesto.setId(rs.getLong(0));
                     gesto.setNombre(rs.getString(1));
                     gesto.setAplicacion(rs.getString(2));
-                    gesto.setLogoAplicacion(rs.getBlob(2));
+                    //gesto.setLogoAplicacion(rs.getBlob(2));
                     gestos.add(gesto);
 
                 } while(rs.moveToNext());
