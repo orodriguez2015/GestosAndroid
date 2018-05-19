@@ -9,8 +9,8 @@
     <!-- BEGIN: SECCION ERRORES -->
     <string name="error_grabar_gesto">Se ha producido un error al grabar el gesto</string>
     <string name="error_no_existe_archivo_gestos">Error, no existe el archivo de gestos</string>
-    <string name="error_gesto_obligatorio">El nombre es obligatorio</string>
-    <string name="error_app_obligatorio">El nombre de la aplicación es obligatorio</string>
+    <string name="error_gesto_obligatorio">El nombre del gesto es obligatorio</string>
+    <string name="error_app_obligatorio">Seleccionar una aplicación es es obligatorio</string>
     <string name="error_lanzar_aplicacion">Se ha producido un error al lanzar la aplicación</string>
     <string name="error_campos_obligatorios_altagesto">Es necesario introducir el nombre del gesto y seleccionar la aplicación a ejecutar</string>
 
@@ -34,6 +34,7 @@
 
     <string name="nombre_gesto_corto">Nombre:</string>
     <string name="nombre_aplicacion_corto">Aplicación:</string>
+    <string name="limpiar">Limpiar</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->

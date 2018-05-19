@@ -8,11 +8,11 @@
     <size android:height="35dp"></size>
 
     <padding
-        android:left="0dp"
-        android:right="0dp"
-        />
+        android:left="47dp"
+        android:right="0dp"/>
 
     <stroke
         android:width="2dp"
         android:color="@color/colorDarkLight"/>
 </shape>
+

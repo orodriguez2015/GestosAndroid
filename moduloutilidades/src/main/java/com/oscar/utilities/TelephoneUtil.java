@@ -27,14 +27,15 @@ public class TelephoneUtil {
 
     /**
      * Devuelve la info del dispositivo
+     *
      * @param context: Context
      * @return DatosUsuarioVO
      */
-    public static DatosUsuarioVO getInfoDispositivo(Context context){
+    public static DatosUsuarioVO getInfoDispositivo(Context context) {
 
         DatosUsuarioVO salida = new DatosUsuarioVO();
         StringBuffer sb = new StringBuffer();
-        TelephonyManager telephoneManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephoneManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
 
         sb.append("Número teléfono: ").append(telephoneManager.getLine1Number());
@@ -45,15 +46,15 @@ public class TelephoneUtil {
         sb.append(Constantes.COMMA);
         sb.append("Sim Serial Number: ").append(telephoneManager.getSimSerialNumber());
         sb.append(Constantes.COMMA);
-        sb.append("Voice mail number: " ).append(telephoneManager.getVoiceMailNumber());
+        sb.append("Voice mail number: ").append(telephoneManager.getVoiceMailNumber());
         sb.append(Constantes.COMMA);
-        sb.append("Device software version: " ).append(telephoneManager.getDeviceSoftwareVersion());
+        sb.append("Device software version: ").append(telephoneManager.getDeviceSoftwareVersion());
         sb.append(Constantes.COMMA);
-        sb.append("Subscriber id: " ).append(telephoneManager.getSubscriberId());
+        sb.append("Subscriber id: ").append(telephoneManager.getSubscriberId());
         sb.append(Constantes.COMMA);
-        sb.append("Sim operator: " ).append(telephoneManager.getSimOperator());
+        sb.append("Sim operator: ").append(telephoneManager.getSimOperator());
         sb.append(Constantes.COMMA);
-        sb.append("Sim country iso: " ).append(telephoneManager.getSimCountryIso());
+        sb.append("Sim country iso: ").append(telephoneManager.getSimCountryIso());
         sb.append(Constantes.COMMA);
         sb.append("getVoidceMailAlphaTag: ").append(telephoneManager.getVoiceMailAlphaTag());
 
@@ -72,28 +73,30 @@ public class TelephoneUtil {
 
     /**
      * Devuelve información sobre el teléfono como sim, número de serie, etcétera en formato String
+     *
      * @param activity Activity desde la que se hace la petición
      * @return String
      */
-    public static String getPhoneNumber(Activity activity){
+    public static String getPhoneNumber(Activity activity) {
 
         StringBuffer sb = new StringBuffer();
-        TelephonyManager telephoneManager = (TelephonyManager)activity.getSystemService(Context.TELEPHONY_SERVICE);
+        TelephonyManager telephoneManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
 
         sb.append("Número teléfono: ").append(telephoneManager.getLine1Number());
         sb.append("Device id: ").append(telephoneManager.getDeviceId());
         sb.append("Network operator: ").append(telephoneManager.getNetworkOperator());
         sb.append("Sim Serial Number: ").append(telephoneManager.getSimSerialNumber());
-        sb.append("Voice mail number: " ).append(telephoneManager.getVoiceMailNumber());
-        sb.append("Device software version: " ).append(telephoneManager.getDeviceSoftwareVersion());
-        sb.append("Subscriber id: " ).append(telephoneManager.getSubscriberId());
+        sb.append("Voice mail number: ").append(telephoneManager.getVoiceMailNumber());
+        sb.append("Device software version: ").append(telephoneManager.getDeviceSoftwareVersion());
+        sb.append("Subscriber id: ").append(telephoneManager.getSubscriberId());
 
         return sb.toString();
     }
 
 
     /**
-     * Método que oculta el teclado
+     * Operación que oculta el teclado del dispositivo
+     *
      * @param activity Activity
      */
     public static void hideKeyboard(Activity activity) {
@@ -106,6 +109,7 @@ public class TelephoneUtil {
 
     /**
      * Devuelve una lista de las aplicaciones instaladas en el dispositivo
+     *
      * @return List<ApplicationInfo>
      */
     public static List<ApplicationInfo> getInstalledApplications(Activity actividad) {
@@ -115,8 +119,8 @@ public class TelephoneUtil {
             final PackageManager pm = actividad.getPackageManager();
             packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
-        }catch(Exception e) {
-            LogCat.error(Constantes.TAG_UTILITIES,"Error al recuperar la lista de apps instaladas en el dispositivo: " + e.getMessage());
+        } catch (Exception e) {
+            LogCat.error(Constantes.TAG_UTILITIES, "Error al recuperar la lista de apps instaladas en el dispositivo: " + e.getMessage());
         }
 
         return packages;
@@ -125,25 +129,25 @@ public class TelephoneUtil {
 
     /**
      * Devuelve el logo de una determinada aplicación instalada en el dispostivo
+     *
      * @param appName Nombre de la aplicación
      * @param context Context
      * @return Drawable
      */
-    public static Drawable getLogoApplication(String appName,Context context) {
+    public static Drawable getLogoApplication(String appName, Context context) {
         Drawable logo = null;
         try {
 
             ApplicationInfo app = context.getPackageManager().getApplicationInfo(appName, 0);
-            if(app!=null) {
+            if (app != null) {
                 logo = context.getPackageManager().getApplicationIcon(app);
             }
 
-        }catch(Exception e) {
-            LogCat.error(Constantes.TAG_UTILITIES,"Error al recuperar la lista de apps instaladas en el dispositivo: " + e.getMessage());
+        } catch (Exception e) {
+            LogCat.error(Constantes.TAG_UTILITIES, "Error al recuperar la lista de apps instaladas en el dispositivo: " + e.getMessage());
         }
 
         return logo;
     }
-
 
 }

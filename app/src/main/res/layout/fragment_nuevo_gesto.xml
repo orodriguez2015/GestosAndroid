@@ -19,7 +19,7 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:text="@string/nuevo_gesto"
-            android:textColor="#FF5722"
+            android:textColor="@color/colorPrimaryDark"
             android:textSize="30sp" />
 
     </RelativeLayout>
@@ -31,15 +31,16 @@
             android:orientation="vertical">
 
             <EditText
-                android:minHeight="25dp"
-                android:background="@drawable/formacajatexto"
+
+                android:background="@drawable/formacajatextonombregesto"
                 android:id="@+id/txtNombreGesto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textAutoComplete"/>
 
             <Spinner
-                android:minHeight="25dp"
+
+                android:minHeight="10dp"
                 android:layout_marginTop="20dp"
                 android:id="@+id/desplegableAplicacion"
                 android:layout_width="match_parent"
@@ -52,7 +53,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_marginTop="35dp"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal">
@@ -66,6 +67,18 @@
                     android:text="@string/siguiente"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"/>
+
+                <Button
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/formaboton"
+                    android:id="@+id/btnLimpiar"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/limpiar"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorWhite"/>
+
 
             </LinearLayout>
 

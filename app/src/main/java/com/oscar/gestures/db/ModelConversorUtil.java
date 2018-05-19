@@ -23,7 +23,6 @@ public class ModelConversorUtil {
         ContentValues values = new ContentValues();
         values.put(GestoContract.GestoEntry.NOMBRE_GESTO,gesto.getNombre());
         values.put(GestoContract.GestoEntry.APLICACION_GESTO,gesto.getAplicacion());
-        //values.put(GestoContract.GestoEntry.LOGO_APLICACION_GESTO,gesto.getLogoAplicacion());
         return values;
     }
 

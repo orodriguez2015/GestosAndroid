@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -46,6 +45,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
     private EditText txtNombre;
     private Spinner desplegableAplicacion;
     private Button botonSiguiente;
+    private Button botonLimpiar;
     private OnFragmentInteractionListener mListener;
 
 
@@ -81,6 +81,11 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         this.desplegableAplicacion = (Spinner)getActivity().findViewById(R.id.desplegableAplicacion);
         this.botonSiguiente = (Button)getActivity().findViewById(R.id.btnSiguiente);
 
+        this.botonSiguiente = (Button)getActivity().findViewById(R.id.btnSiguiente);
+        this.botonLimpiar   = (Button)getActivity().findViewById(R.id.btnLimpiar);
+
+        recargarDesplegableAplicaciones();
+
         /*
          * Hint para los campos de tipo EditText
          */
@@ -90,8 +95,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
             if(v==txtNombre && !hasFocus) {
-                //TelephoneUtil.hideKeyboard(getActivity());
-                hideKeyboard();
+                TelephoneUtil.hideKeyboard(getActivity());
             }
             }
         });
@@ -104,7 +108,7 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
             @Override
             public void onClick(View v) {
-                hideKeyboard();
+                TelephoneUtil.hideKeyboard(getActivity());
                 String nombre = txtNombre.getText().toString();
                 AplicacionVO aplicacion = (AplicacionVO) desplegableAplicacion.getSelectedItem();
 
@@ -135,7 +139,20 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
          });
 
-        recargarDesplegableAplicaciones();
+
+        /**
+         * Listener para el botón Limpiar
+         */
+        this.botonLimpiar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txtNombre.setText("");
+                desplegableAplicacion.setSelection(0);
+                TelephoneUtil.hideKeyboard(getActivity());
+            }
+        });
+
+
     }
 
 
@@ -212,17 +229,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
         }
     }
 
-
-
-    /**
-     * Oculta el teclado
-     */
-    private void hideKeyboard() {
-        View view = getActivity().getCurrentFocus();
-        if (view != null) {
-            ((InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
 
     /**
      * Método que carga el contenido de la vista, en este caso, del fragmento
