@@ -12,6 +12,7 @@
     <string name="error_gesto_obligatorio">El nombre es obligatorio</string>
     <string name="error_app_obligatorio">El nombre de la aplicación es obligatorio</string>
     <string name="error_lanzar_aplicacion">Se ha producido un error al lanzar la aplicación</string>
+    <string name="error_campos_obligatorios_altagesto">Es necesario introducir el nombre del gesto y seleccionar la aplicación a ejecutar</string>
 
     <!-- END: SECCION ERRORES -->
 

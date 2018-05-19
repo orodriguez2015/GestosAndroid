@@ -6,7 +6,6 @@ import android.content.pm.ApplicationInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.oscar.gestures.ActividadEntrada;
 import com.oscar.gestures.ActividadNuevoGesto;
@@ -23,9 +21,10 @@ import com.oscar.gestures.constantes.ConstantsGestures;
 import com.oscar.gestures.vo.AplicacionVO;
 import com.oscar.gestures.vo.Gesto;
 import com.oscar.spinner.adapter.ImageSpinnerAdapter;
-import com.oscar.utilities.MessageUtils;
 import com.oscar.utilities.StringUtils;
 import com.oscar.utilities.TelephoneUtil;
+import com.oscar.utilities.dialog.AlertDialogHelper;
+import com.oscar.utilities.dialog.ParamsAlertDialogVO;
 import com.oscar.utilities.logcat.LogCat;
 
 import java.util.ArrayList;
@@ -33,12 +32,8 @@ import java.util.List;
 
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link FragmentoFormularioNuevoGesto.OnFragmentInteractionListener} interface
- * to handle interaction events.
- //* Use the {@link FragmentoFormularioNuevoGesto} factory method to
- * create an instance of this fragment.
+ * Fragmento que contien el formulario de alta de  un nuevo gesto
+ * @author <a href="mailto:oscar.rodriguezbrea@gmail.com">Óscar Rodríguez</a>
  */
 public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,12 +43,9 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private EditText txtNombre;
     private Spinner desplegableAplicacion;
     private Button botonSiguiente;
-    private TextView errorTextView;
-
     private OnFragmentInteractionListener mListener;
 
 
@@ -85,12 +77,9 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LogCat.info(ConstantsGestures.TAG," =====> FragmentoFormularioNuevoGesto.onViewCreated view: " + view);
-
         this.txtNombre = (EditText)getActivity().findViewById(R.id.txtNombreGesto);
         this.desplegableAplicacion = (Spinner)getActivity().findViewById(R.id.desplegableAplicacion);
         this.botonSiguiente = (Button)getActivity().findViewById(R.id.btnSiguiente);
-        //this.errorTextView = (TextView)getActivity().findViewById(R.id.error_text_spinner);
 
         /*
          * Hint para los campos de tipo EditText
@@ -120,27 +109,25 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
                 AplicacionVO aplicacion = (AplicacionVO) desplegableAplicacion.getSelectedItem();
 
                 View focus = null;
+                String msgError = "";
                 if(StringUtils.isEmpty(nombre)) {
-                    txtNombre.setError(getString(R.string.error_gesto_obligatorio));
+                    msgError = getString(R.string.error_gesto_obligatorio);
                     focus = txtNombre;
                 } else
                 if(aplicacion==null || aplicacion.isValorPorDefecto()) {
-                    //errorTextView.setVisibility(View.VISIBLE);
-                    //errorTextView.setError("Mierda " + getString(R.string.error_gesto_obligatorio));
-
+                    msgError = getString(R.string.error_app_obligatorio);
                     focus = desplegableAplicacion;
                 }
 
                 if(focus!=null) {
                     focus.setFocusable(true);
+                    ParamsAlertDialogVO params = new ParamsAlertDialogVO(getActivity(),msgError,getString(R.string.txt_atencion),getString(R.string.txt_dialogo_aceptar),getString(R.string.txt_dialogo_cancelar));
+                    AlertDialogHelper.crearDialogoAlertaAdvertencia(params).show();
                 }else {
                     vaciarFormulario();
-
                     Gesto gesto = new Gesto();
                     gesto.setNombre(nombre);
                     gesto.setAplicacion(aplicacion.getNombreAplicacion());
-
-
                     abrirActividad(gesto);
                 }
 
@@ -150,8 +137,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
 
         recargarDesplegableAplicaciones();
     }
-
-
 
 
 
@@ -219,8 +204,6 @@ public class FragmentoFormularioNuevoGesto extends FragmentoPadre {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
 
-        LogCat.info(ConstantsGestures.TAG,"onActivityResult requestCode: " + requestCode + ", resultCode: " + resultCode);
-        MessageUtils.showToast(getContext(),"requestCode: " + requestCode + ", resultCode: " + resultCode,20);
         if (requestCode == ConstantsGestures.RESULTADO_ACTIVIDAD_ALTA_GESTO) {
             ActividadEntrada actividad = (ActividadEntrada)getActivity();
             actividad.recargarListadoGestos();

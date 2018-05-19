@@ -19,10 +19,8 @@ public class ParamsAlertDialogVO {
     @NonNull
     private String titulo;
 
-    @NonNull
     private String aceptar;
 
-    @NonNull
     private String cancelar;
 
 
@@ -34,7 +32,7 @@ public class ParamsAlertDialogVO {
      * @param aceptar  Texto para el botón [Aceptar]
      * @param cancelar Texto para el botón [Cancelar]
      */
-    public ParamsAlertDialogVO(@NonNull Activity activity, @NonNull String mensaje, @NonNull String titulo, @NonNull String aceptar, @NonNull String cancelar) {
+    public ParamsAlertDialogVO(@NonNull Activity activity, @NonNull String mensaje, @NonNull String titulo, String aceptar,String cancelar) {
         this.activity = activity;
         this.mensaje = mensaje;
         this.titulo = titulo;
@@ -69,6 +67,7 @@ public class ParamsAlertDialogVO {
      */
     @NonNull
     public String getAceptar() {
+
         return aceptar;
     }
 

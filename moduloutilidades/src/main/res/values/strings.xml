@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ModuloUtilidades</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="cancelar">Cancelar</string>
 </resources>

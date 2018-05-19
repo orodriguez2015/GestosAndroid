@@ -52,7 +52,6 @@ public class AlertDialogHelper  {
         builder.setMessage(params.getMensaje());
         // Acción para el botón de "Aceptar"
         builder.setPositiveButton(params.getAceptar(),new BtnAceptarCancelarDialogGenerico());
-
         return builder.create();
     }
 
